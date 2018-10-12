@@ -1,0 +1,69 @@
+.home{
+position: relative;
+}
+.home .login-state{
+    display: flex;
+    flex-direction:column;
+    justify-content:space-around;
+    align-items:center;
+    height:180px;
+    background: linear-gradient(to right, #37c3fe , #2f8fff);
+
+}
+.home .login-state .user{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    height:120px;
+    width: 120px;
+    border-radius: 100%;
+    background: radial-gradient(#ffffff 49%, #81c8fe 51%, #81c8fe 60%,#4da9ff 62%);
+}
+.home .login-state .user div{
+    width: 62%;
+    height: 62%;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.home .login-state .user div img{
+    width:100%;
+    height:100%;
+}
+.home .login-state p{
+    text-align: center;
+    color: #ffffff;
+}
+.home .login-state p:first-of-type{
+    font-weight: bold;
+}
+.home .sys-list{
+    padding:10px 5px;
+}
+
+.home .sys-list li{
+    display: flex;
+    align-items:center;
+    float: left;
+    width: calc(50% - 10px);
+    height:80px;
+    margin: 0 5px 10px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px #caf3fa;
+}
+.home .sys-list li .iconfont{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 36px;
+    font-size: 36px;
+}
+.home .sys-list li p{
+    font-weight: bold;
+    color:#8e959d;
+}
+.home .sys-list li .icon-drgspingtairuanjianxitong37{
+    margin-left: 0;
+    margin-right: 20px;
+}
+.home li.active i{
+    color:#8e959d;
+}

@@ -1,0 +1,125 @@
+.login .logo{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content:flex-end;
+    width:100%;
+    height:230px;
+    background: url("../image/logo.png") no-repeat;
+    background-size: 100% 100%;
+}
+.login .logo p{
+    margin:20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1c7bb7;
+    align-self:flex-end;
+}
+.login .msg ul{
+    margin-left:50px;
+    margin-right: 50px;
+}
+.login .msg ul li{
+    position: relative;
+    margin-bottom: 16px;
+}
+.login .msg ul li .err{
+    position: absolute;
+    left:0;
+    bottom: -18px;
+    color:red;
+}
+.login .msg .user{
+    background: url("../image/phone.png") no-repeat 0 5px;
+    background-size: 15px 20px;
+
+}
+.login .msg .password{
+    background: url("../image/lock.png") no-repeat 0 5px;
+    background-size: 16px 20px;
+}
+.login .msg .code{
+     background: url("../image/msg.png") no-repeat 0 8px;
+     background-size: 16px 16px;
+ }
+.login .msg .code .get-code{
+    position: absolute;
+    right: 0;
+    top:0;
+    padding:5px 10px;
+    color: #e18b33;
+    background:#b6b6b6;
+    border-radius: 5px;
+}
+.login .msg .code .active{
+    color:#000000;
+}
+.login .msg input{
+    width: calc(100% - 30px);
+    height:28px;
+    font-size: 16px;
+    padding-left:30px;
+    border: none;
+    border-bottom: 1px solid #cccccc;
+    background: inherit;
+}
+.login .msg .sign{
+    height:30px;
+    margin-top: 30px;
+    border: none;
+
+
+}
+.login .msg .sign button{
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+
+}
+.login .msg li:last-child{
+    display: flex;
+    justify-content:space-between;
+}
+.login .msg li:last-child p:last-child{
+    color:red;
+}
+.login .msg{
+    margin-bottom: 38px;
+}
+.login .other{
+    margin-bottom: 30px;
+    text-align: center;
+}
+.login .other span{
+    position: relative;
+
+}
+.login .other span:before{
+    content: " ";
+    display: block;
+    position: absolute;
+    left:-90px;
+    top:8px;
+    width:80px;
+    border-bottom: 1px solid #cccccc;
+}
+.login .other span:after{
+    content: " ";
+    display: block;
+    position: absolute;
+    right:-90px;
+    top:8px;
+    width:80px;
+    border-bottom: 1px solid #cccccc;
+}
+.login .acc{
+    display: flex;
+    justify-content:center;
+}
+.login .acc li{
+    width: 38px;
+    height: 38px;
+}
+.login .acc li img{
+    width: 100%;
+    height: 100%;
+}

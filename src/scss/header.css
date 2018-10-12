@@ -1,0 +1,35 @@
+.header{
+  display: flex;
+  height:46px;
+  color: #ffffff;
+  background: linear-gradient(to right, #37c3fe , #2f8fff);
+
+}
+.header .el{
+  width:80px;
+}
+.header .el:nth-child(2){
+  flex-grow: 1;
+  margin-left:40px;
+  text-align: center;
+}
+.header .el h3{
+  font-size: 18px;
+  line-height: 46px;
+}
+.header .right,.header .left{
+  display: flex;
+  align-items:center;
+
+}
+.header .right{
+
+  width: 120px;
+  text-align: right;
+}
+.header .right div{
+  width:100%;
+}
+.header .right i{
+  font-size: 12px;
+}

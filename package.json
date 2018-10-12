@@ -1,0 +1,31 @@
+{
+  "name": "xy-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.1.5",
+    "better-scroll": "^1.13.0",
+    "element-react": "^1.4.21",
+    "element-theme-default": "^1.4.13",
+    "node-sass": "^4.9.3",
+    "postcss-loader": "^3.0.0",
+    "react-iscroll": "^2.0.3",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "sass-loader": "^7.1.0",
+    "whatwg-fetch": "^3.0.0"
+  }
+}
