@@ -1,7 +1,9 @@
+import $ from "jquery"
 import React, { Component } from 'react';
 import {SelectHospital} from '../component/select';
 import {Button,Loading,MessageBox} from "element-react";
-import {getCodeTime} from "../tool/tool";
+import {getCodeTime,formData,baseUrl} from "../tool/tool";
+import qs from 'qs';
 import "whatwg-fetch";
 export class Register extends Component {
     constructor (props) {
@@ -39,13 +41,41 @@ export class Register extends Component {
         }
     }
     getData = (url,parameter) => {
-        this.state.loading=true;
+        this.setState({loading:true});
+        // let _this=this;
+        // $.ajax({
+        //     url:url,
+        //     method:"post",
+        //     data:parameter,
+        //     success:function(data){
+        //         _this.setState({loading:false});
+        //         switch (data.code){
+        //             case 303:
+        //                 _this.setState({errPhone:"用户以注册"});
+        //                 break;
+        //             case 301:
+        //                 _this.setState({errCode:"验证码错误，请获取新验证码"});
+        //                 break;
+        //             case 0:
+        //                 _this.setState({registerSuccess:true});
+        //                 break;
+        //             default :
+        //                 MessageBox.alert("注册失败，请重新注册");
+        //                 break;
+        //         }
+        //     },
+        //     error:function(err){
+        //         _this.setState({loading:false});
+        //         MessageBox.alert("注册失败，请重新注册")
+        //     }
+        // })
+
         fetch(url,{
             method:"post",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: JSON.stringify(parameter)
+            body: qs.stringify(parameter)
         })
         .then((response) => {
             this.setState({loading:false});
@@ -56,17 +86,17 @@ export class Register extends Component {
         })
         .then((data) => {
             switch (data.code){
-                case "303":
+                case 303:
                     this.setState({errPhone:"用户以注册"});
                     break;
-                case "301":
+                case 301:
                     this.setState({errCode:"验证码错误，请获取新验证码"});
                     break;
-                case "0":
+                case 0:
                     this.setState({registerSuccess:true});
                     break;
                 default :
-                    MessageBox.alert("登录失败，请重新注册");
+                    MessageBox.alert("注册失败，请重新注册");
                     break;
             }
         })
@@ -80,7 +110,10 @@ export class Register extends Component {
         this.setState({errHospital:""});
     }
     getCode = () => {
-        let url="/zhaohuimimayanzhengma";
+        let url=baseUrl+"verifyCode/sendCode_register";
+        if(!this.state.registerMethod){
+            url=baseUrl+"verifyCode/sendCode_changepassword";
+        }
         let parameter={
             phoneNum:this.state.phone
         }
@@ -110,7 +143,7 @@ export class Register extends Component {
                 this.setState({errPhone:"手机号不能为空"});
                 return false;
             }
-            if(!/^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/.test(e.target.value.trim())){
+            if(!/^1[34578]\d{9}$/.test(e.target.value.trim())){
                 this.setState({errPhone:"手机号格式不正确"})
                 this.setState({phone:""})
 
@@ -127,46 +160,62 @@ export class Register extends Component {
             }
             this.setState({code:e.target.value.trim()})
         }
-        if(!this.state.registerMethod){
-            if(v==="newPassWord"){
-                this.setState({errNewPassWord:""});
-                if(!e.target.value.trim()){
-                    this.setState({errNewPassWord:"密码不能为空"});
-                    return false;
-                }
-                if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
-                    this.setState({errNewPassWord:"密码为6-18位的字母、数字、下划线"})
-                    this.setState({newPassWord:""})
-                }else{
-                    this.setState({newPassWord:e.target.value.trim()})
-
-                }
+        if(v==="newPassWord"){
+            this.setState({errNewPassWord:""});
+            if(!e.target.value.trim()){
+                this.setState({errNewPassWord:"密码不能为空"});
+                return false;
             }
-            if(v==="surePassWord"){
-                this.setState({errSurePassWord:""});
-                if(!e.target.value.trim()){
-                    this.setState({errSurePassWord:"请确认新密码"});
-                    return false;
-                }
-                if(!this.state.newPassWord===this.state.surePassWord){
-                    this.setState({errSurePassWord:"两次密码不一致"})
-                    this.setState({surePassWord:""})
-                }else{
-                    this.setState({surePassWord:e.target.value.trim()})
-                }
+            if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
+                this.setState({errNewPassWord:"密码为6-18位的字母、数字、下划线"})
+                this.setState({newPassWord:""})
+            }else{
+                this.setState({newPassWord:e.target.value.trim()})
+
             }
         }
-
+        if(v==="surePassWord"){
+            this.setState({errSurePassWord:""});
+            if(!e.target.value.trim()){
+                this.setState({errSurePassWord:"请确认新密码"});
+                return false;
+            }
+            if(this.state.newPassWord.trim()!==e.target.value.trim()){
+                this.setState({errSurePassWord:"两次密码不一致"});
+                this.setState({surePassWord:""});
+            }else{
+                this.setState({surePassWord:e.target.value.trim()});
+            }
+        }
     }
     submit = () => {
         this.setState({errPhone:""});
         this.setState({errCode:""});
         let flag=true;
-        let url="/yonghuzhuce";
+        let url=baseUrl+"account/register";
         let parameter={}
+        this.setState({errUser:""});
+        this.setState({errCode:""});
+        this.setState({errNewPassWord:""});
+        this.setState({errSurePassWord:""});
+        if(!this.state.phone.trim()){
+            this.setState({errPhone:"手机号不能为空"});
+            flag=false;
+        }
+        if(!this.state.code.trim()){
+            this.setState({errCode:"验证码不能为空"});
+            flag=false;
+        }
+        if(!this.state.newPassWord.trim()){
+            this.setState({errNewPassWord:"密码不能为空"});
+            flag=false;
+        }
+        if(!this.state.surePassWord.trim()){
+            this.setState({errSurePassWord:"请确认新密码"});
+            flag=false;
+        }
+
         if(this.state.registerMethod) {
-            this.setState({errUser:""});
-            this.setState({errCode:""});
             if(!this.state.hospital.trim()){
                 this.setState({errHospital:"请选择院区"});
                 flag=false;
@@ -175,44 +224,19 @@ export class Register extends Component {
                 this.setState({errUser:"用户名不能为空"});
                 flag=false;
             }
-            if(!this.state.phone.trim()){
-                this.setState({errPhone:"手机号不能为空"});
-                flag=false;
-            }
-            if(!this.state.code.trim()){
-                this.setState({errCode:"验证码不能为空"});
-                flag=false;
-            }
             parameter={
                 id:this.state.hospital,
                 user:this.state.user,
                 phoneNum:this.state.phone,
-                code:this.state.code
+                code:this.state.code,
+                password:this.state.newPassWord
             }
         }else{
-            this.setState({errNewPassWord:""});
-            this.setState({errSurePassWord:""});
-            if(!this.state.phone.trim()){
-                this.setState({errPhone:"手机号不能为空"});
-                flag=false;
-            }
-            if(!this.state.code.trim()){
-                this.setState({errCode:"验证码不能为空"});
-                flag=false;
-            }
-            if(!this.state.newPassWord.trim()){
-                this.setState({errNewPassWord:"密码不能为空"});
-                flag=false;
-            }
-            if(!this.state.surePassWord.trim()){
-                this.setState({errSurePassWord:"请确认新密码"});
-                flag=false;
-            }
-            url="/zhaohuimima";
+            url=baseUrl+"account/changepassword";
             parameter={
                 phoneNum:this.state.phone,
                 code:this.state.code,
-                password:this.state.password
+                password:this.state.newPassWord
             }
         }
         if(!flag){
@@ -270,20 +294,16 @@ export class Register extends Component {
                                         <p className="err">{this.state.errCode}</p>
 
                                     </li>
-                                    {
-                                        this.state.registerMethod? null:
-                                            <li>
-                                                <label><input type="password" placeholder="请输入新密码" onBlur={this.getValue.bind(this,"newPassWord")}/></label>
-                                                <p className="err">{this.state.errNewPassWord}</p>
-                                            </li>
-                                    }
-                                    {
-                                        this.state.registerMethod? null:
-                                            <li>
-                                                <label><input type="password" placeholder="请确认新密码" onBlur={this.getValue.bind(this,"surePassWord")}/></label>
-                                                <p className="err">{this.state.errSurePassWord}</p>
-                                            </li>
-                                    }
+
+                                    <li>
+                                        <label><input type="password" placeholder="请输入新密码" onBlur={this.getValue.bind(this,"newPassWord")}/></label>
+                                        <p className="err">{this.state.errNewPassWord}</p>
+                                    </li>
+                                    <li>
+                                        <label><input type="password" placeholder="请确认新密码" onBlur={this.getValue.bind(this,"surePassWord")}/></label>
+                                        <p className="err">{this.state.errSurePassWord}</p>
+                                    </li>
+
                                     <li><Button type="info"  onClick={this.submit}>{this.state.registerMethod?"发送":"确认"}</Button></li>
                                 </ul>
                             </section>

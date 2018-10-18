@@ -1,9 +1,14 @@
+import $ from "jquery"
 import React, { Component } from 'react';
 import wx from '../image/wx.png'
-import {getCodeTime,getCookie,setCookie,delCookie} from "../tool/tool";
+import {getCodeTime,getCookie,setCookie,formData,baseUrl} from "../tool/tool";
 import {Link} from 'react-router-dom'
 import {Button,Loading,MessageBox} from "element-react"
 import "whatwg-fetch"
+import qs from "qs";
+function shoeData(res){
+    console.log(res);
+}
 export class Login extends Component {
     constructor (props){
         super(props);
@@ -25,12 +30,45 @@ export class Login extends Component {
         }
     }
     getData = (url,parameter) => {
+        let _this=this;
+        // $.ajax({
+        //     url:url,
+        //     method:"post",
+        //     data:parameter,
+        //     success:function(data){
+        //         _this.setState({loading:false});
+        //         switch (data.code){
+        //             case 201:
+        //                 _this.setState({errPhone:"用户名不存在"});
+        //                 break;
+        //             case 202:
+        //                 _this.setState({errPassword:"密码错误"});
+        //                 break;
+        //             case 301:
+        //                 _this.setState({errCode:"验证码失效，请获取新验证码"});
+        //                 break;
+        //             case 0:
+        //                 setCookie("token",JSON.stringify(data.msg),10);
+        //                 _this.props.history.push( '/home',null);
+        //                 break;
+        //             default :
+        //                 MessageBox.alert("登录失败，请重新登录");
+        //                 break;
+        //
+        //         }
+        //     },
+        //     error:function(err){
+        //         _this.setState({loading:false});
+        //         MessageBox.alert("登录失败，请重新登录");
+        //     }
+        // })
+
         fetch(url,{
             method:"post",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: JSON.stringify(parameter)
+            body: qs.stringify(parameter)
         })
         .then(response => {
             this.setState({loading:false});
@@ -39,18 +77,17 @@ export class Login extends Component {
             }
         })
         .then((data) => {
-            console.log(data.arr)
             switch (data.code){
-                case "201":
+                case 201:
                     this.setState({errPhone:"用户名不存在"});
                     break;
-                case "202":
+                case 202:
                     this.setState({errPassword:"密码错误"});
                     break;
-                case "301":
+                case 301:
                     this.setState({errCode:"验证码失效，请获取新验证码"});
                     break;
-                case "0":
+                case 0:
                     MessageBox.alert("登录成功");
                     setCookie("token",JSON.stringify(data.msg),10);
                     this.props.history.push( '/home',null);
@@ -76,11 +113,12 @@ export class Login extends Component {
             password:"",
             errPhone:"",
             errCode:"",
-            errPassword:""
+            errPassword:"",
+            loginFlag:true
         })
     }
     getCode = () =>{
-        let url="/dengluyanzhengma";
+        let url=baseUrl+"verifyCode/sendCode_login";
         let parameter={
             phoneNum:this.state.phone
         }
@@ -90,16 +128,19 @@ export class Login extends Component {
         if(v==="phone"){
             this.setState({errPhone:""});
             this.setState({phone:e.target.value.trim()});
-            if(!/^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/.test(e.target.value.trim())){
-                this.setState({errPhone:"手机号格式不正确"})
+            if(!/^1[34578]\d{9}$/.test(e.target.value.trim())){
+                this.setState({errPhone:"手机号格式不正确"});
+                return false;
             }
         }
         if(v==="password"){
             this.setState({errPassword:""});
             this.setState({password:e.target.value.trim()});
             if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
-                this.setState({errPassword:"密码为6-18位的字母、数字、下划线"})
+                this.setState({errPassword:"密码为6-18位的字母、数字、下划线"});
+
             }
+
         }
         if(v==="code"){
             this.setState({errCode:""});
@@ -113,8 +154,11 @@ export class Login extends Component {
         // console.log(localStorage.getItem(`myCat`));
         // console.log(localStorage.getItem(`myerwtat`));
         let flag=true;
-        let url="./mimadenglu";
+        let url=baseUrl+"account/getUserAccessToken/password";
         let parameter={};
+        if(!!this.state.errPhone||!!this.state.errPassword||!!this.state.errCode){
+            return false;
+        }
         this.setState({errPhone:""});
         if(!this.state.phone.trim()){
             this.setState({errPhone:"手机号不能为空"});
@@ -136,7 +180,7 @@ export class Login extends Component {
                 this.setState({errCode:"验证码不能为空"});
                 flag=false;
             }
-            url="yanzhenmadenglu";
+            url=baseUrl+"account/getUserAccessToken/verificationCode";
             parameter={
                 phoneNum:this.state.phone,
                 code:this.state.code
@@ -147,10 +191,25 @@ export class Login extends Component {
         }
         this.getData(url,parameter);
     }
+    sub = () => {
+        // $("head").append("<script src='http://192.168.1.109:8005/api/system/modules?callback=showData'><\/script>");
+       $.ajax({
+           url:"http://192.168.1.109:8005/api/verifyCode/sendCode_login",
+           success:function(data){
+               console.log("成功");
+               console.log(data);
+           },
+           error:function(err){
+               console.log("失败")
+               console.log(err)
+           }
+       })
+    }
     render(){
         return (
             <div className="login">
                 <div className="logo">
+                    {/*<Button type="info" onClick={this.sub}>反向代理测试</Button>*/}
                     <p onClick={this.toggleLoginMethod}>
                         {
                             this.state.loginMethod?`短信登录`:`密码登录`
@@ -166,12 +225,12 @@ export class Login extends Component {
                         {
                             this.state.loginMethod?
                                 <li className="password">
-                                    <input onChange={this.getValue.bind(this,"password")} type="password" value={this.state.password}/>
+                                    <input placeholder="请输入密码" onChange={this.getValue.bind(this,"password")} type="password" value={this.state.password}/>
                                     <p className="err">{this.state.errPassword}</p>
                                 </li>
                                 :
                                 <li className="code">
-                                    <input onChange={this.getValue.bind(this,"code")} type="text" value={this.state.code}/>
+                                    <input placeholder="请输入验证码" onChange={this.getValue.bind(this,"code")} type="text" value={this.state.code}/>
                                     <p className={`get-code ${this.state.getCodeFlag?'':'active'}`} onClick={this.getCode}>{this.state.codeBtnText}</p>
                                     <p className="err">{this.state.errCode}</p>
                                 </li>

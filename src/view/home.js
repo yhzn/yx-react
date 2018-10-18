@@ -1,9 +1,11 @@
+import $ from "jquery";
 import React, { Component } from 'react';
 import {Header} from "../component/header";
 import {MessageBox,Loading} from "element-react";
 import BScroll from 'better-scroll';
-import {getCookie,delCookie} from "../tool/tool";
+import {getCookie,delCookie,baseUrl} from "../tool/tool";
 import "whatwg-fetch";
+// import qs from "qs";
 export class Home extends Component {
     constructor (props){
         super(props);
@@ -11,67 +13,34 @@ export class Home extends Component {
             elementList:null,
             loading:false,
             data:{
-                user:"小明",
-                userImg:"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=773579743,2271149885&fm=26&gp=0.jpg",
-                hospital:"东方",
-                system:[
-                {
-                    href:'',
-                    auth:true,
-                    icon:'icon-xitongjiaoseyingyong',
-                    text:'总值班系统'
-                },
-                {
-                    href:'',
-                    auth:true,
-                    icon:'icon-xitongguanli-',
-                    text:'服务器监控'
-                },
-                {
-                    href:'',
-                    auth:false,
-                    icon:'icon-caozuoxitong',
-                    text:'危急值管理'
-                },
-                {
-                    href:'',
-                    auth:false,
-                    icon:'icon-apixitongrizhi',
-                    text:'病例管理'
-                },
-                {
-                    href:'',
-                    auth:false,
-                    icon:'icon-drgspingtairuanjianxitong37',
-                    text:'委员会投票'
-                },
-                {
-                    href:'',
-                    auth:false,
-                    icon:'icon-xitongguanli',
-                    text:'系统设置'
-                },
-                {
-                    href:'',
-                    auth:false,
-                    icon:'icon-xitongpeizhi',
-                    text:'自动巡检'
-                },
-                {
-                    href:'',
-                    auth:false,
-                    icon:'icon-navicon-xtpz',
-                    text:'运维处理'
-                }
-            ]
+                user:"",
+                userImg:"",
+                hospital:"",
+                system:[]
             }
         }
     }
     componentDidMount () {
+        this.getData();
+
+    }
+    router=(url,auth)=>{
+        if(!auth){
+            MessageBox.alert("无操作权限");
+            return false;
+        }
+        window.location.href=url;
+    }
+    getData = () => {
         let hasCookie=getCookie("token");
         if(hasCookie){
             this.setState({loading:true});
-            fetch("/httpzhuye?"+hasCookie)
+            fetch(baseUrl+"system/modules",
+                {
+                    headers:{
+                        Token:hasCookie
+                    }
+                })
                 .then((response) => {
                     this.setState({loading:false});
                     if(response.status==200){
@@ -79,8 +48,8 @@ export class Home extends Component {
                     }
                 })
                 .then((data)=>{
-                    if(data.code=="0"){
-                        this.setState({data:data});
+                    if(data.code==0){
+                        this.setState({data:data.msg});
                         this.setState({elementList:this.sysList()});
                         this.timer=setTimeout(()=>{
                             new BScroll(this.refs.scroll,{
@@ -115,18 +84,66 @@ export class Home extends Component {
                         this.props.history.push( '/',null);
                     })
                 })
+        }else{
+            this.props.history.push( '/',null);
+
         }
 
+        // let hasCookie=getCookie("token");
+        // if(hasCookie){
+        //     this.setState({loading:true});
+        //     let _this=this;
+        //     $.ajax({
+        //         url:baseUrl+"system/modules",
+        //         headers:{
+        //             Token:hasCookie
+        //         },
+        //         success:function (data) {
+        //             _this.setState({loading:false});
+        //             if(data.code==0){
+        //                 _this.setState({data:data.msg});
+        //                 _this.setState({elementList:_this.sysList()});
+        //                 _this.timer=setTimeout(()=>{
+        //                     new BScroll(_this.refs.scroll,{
+        //                         scrollY:true,
+        //                         click:true,
+        //                         probeType:3,
+        //                     }).on('scroll',(pos)=>{
+        //                     })
+        //                     clearTimeout(_this.timer)
+        //
+        //                 },100)
+        //
+        //             }else{
+        //                 MessageBox.msgbox({
+        //                     title: '消息',
+        //                     message: '用户验证失效，请重新登陆',
+        //                     showCancelButton: false
+        //                 }).then(action => {
+        //                     delCookie("token");
+        //                     _this.props.history.push( '/',null);
+        //                 })
+        //             }
+        //         },
+        //         error:function(err){
+        //             _this.setState({loading:false});
+        //             MessageBox.msgbox({
+        //                 title: '消息',
+        //                 message: '用户验证失效，请重新登陆',
+        //                 showCancelButton: false
+        //             }).then(action => {
+        //                 delCookie("token");
+        //                 _this.props.history.push( '/',null);
+        //             })
+        //         }
+        //     })
+        // }else{
+        //     this.props.history.push( '/',null);
+        //
+        // }
     }
-    router=(url,auth)=>{
-        if(!auth){
-            MessageBox.alert("无操作权限");
-            return false;
-        }
-        window.location.href=url;
-    }
-    getData = () => {
-
+    goBack = () => {
+        this.props.history.goBack();
     }
     sysList () {
         const liElement=this.state.data.system.map((item,index)=>(
@@ -140,7 +157,7 @@ export class Home extends Component {
     render() {
         return (
             <div>
-                <Header hosiptal={this.state.data.hospital}/>
+                <Header goBack={this.goBack} hosiptal={this.state.data.hospital}/>
                 <div className="home container" ref="scroll">
                     <div>
                         <div className="login-state">

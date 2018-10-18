@@ -4,9 +4,10 @@ import 'element-theme-default';
 import './App.css';
 import {Home} from './view/home';
 import {Login} from "./view/login";
-import {BrowserRouter as Router,Route} from 'react-router-dom'
+import {HashRouter as Router,Route} from 'react-router-dom'
 import {Register} from "./view/register";
-
+import createHistory from 'history/createHashHistory'
+const history = createHistory();
 class App extends Component {
   render() {
     return (

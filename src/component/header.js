@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-
+import {delCookie} from '../tool/tool'
 export class Header extends Component {
+    constructor (props){
+        super(props);
+    }
+    goBack = () => {
+        delCookie("token");
+        this.props.goBack();
+    }
     render () {
         return (
             <div className="header">
-                <div className="left el padding-left-10">
+                <div className="left el padding-left-10" onClick={this.goBack}>
                     <i className="el-icon-arrow-left"></i>
                 </div>
                 <div className="center el">
