@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24df514b-cc66-4d9b-b446-a6a19b15513a" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.rar" beforeDir="false" afterPath="$PROJECT_DIR$/build.rar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/text.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/text.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/component/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tool/tool.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/tool/tool.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/register.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -42,11 +32,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="qs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="qs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/qs/dist/qs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1330">
-              <caret line="127" column="32" lean-forward="true" selection-start-line="127" selection-start-column="32" selection-end-line="127" selection-end-column="32" />
+            <state relative-caret-position="-3420">
+              <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -193,6 +192,7 @@
         <option value="$PROJECT_DIR$/src/view/login.js" />
         <option value="$PROJECT_DIR$/src/view/home.js" />
         <option value="$PROJECT_DIR$/src/tool/tool.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -213,9 +213,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="265" />
-    <option name="y" value="23" />
-    <option name="width" value="1438" />
+    <option name="x" value="278" />
+    <option name="y" value="71" />
+    <option name="width" value="1620" />
     <option name="height" value="830" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -230,58 +230,6 @@
             <path>
               <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
               <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="qs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="qs" type="462c0819:PsiDirectoryNode" />
-              <item name="dist" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="qs" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="component" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="xy-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xy-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -342,18 +290,18 @@
       <workItem from="1539685070734" duration="1018000" />
       <workItem from="1539739865349" duration="2976000" />
       <workItem from="1539742870527" duration="22883000" />
-      <workItem from="1539826023977" duration="18150000" />
+      <workItem from="1539826023977" duration="18496000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="181258000" />
+    <option name="totallyTimeSpent" value="181604000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="265" y="23" width="1438" height="830" extended-state="0" />
+    <frame x="278" y="71" width="1620" height="830" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7713068" visible="true" weight="0.115" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7713068" visible="true" weight="0.10176991" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -361,7 +309,7 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.07959479" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2561505" />
       <window_info id="Favorites" order="2" sideWeight="0.22869319" side_tool="true" weight="0.12158055" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -412,13 +360,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/scss/home.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/component/header.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -695,8 +636,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/qs/dist/qs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1330">
-          <caret line="127" column="32" lean-forward="true" selection-start-line="127" selection-start-column="32" selection-end-line="127" selection-end-column="32" />
+        <state relative-caret-position="-3420">
+          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
