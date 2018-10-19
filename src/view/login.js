@@ -151,7 +151,7 @@ export class Login extends Component {
         // setCookie("token","123",10)
         // console.log(getCookie("token"))
         // localStorage.setItem(`myCat`, `Tom`);
-        // console.log(localStorage.getItem(`myCat`));
+        // console.log(localStorage.getItem(`mt`));
         // console.log(localStorage.getItem(`myerwtat`));
         let flag=true;
         let url=baseUrl+"account/getUserAccessToken/password";
