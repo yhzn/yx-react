@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import {delCookie} from '../tool/tool'
 export class Header extends Component {
-    constructor (props){
-        super(props);
-    }
     goBack = () => {
         delCookie("token");
         this.props.goBack();
@@ -16,12 +13,16 @@ export class Header extends Component {
                 </div>
                 <div className="center el">
                     <h3>
-                        医信平台
+                        {this.props.title}
                     </h3>
                 </div>
                 <div className="right el padding-right-10">
                     <div>
-                       <p>{this.props.hosiptal}<i className="el-icon-arrow-down margin-left-10"></i></p>
+                        {
+                            this.props.hosiptal?
+                                <p>{this.props.hosiptal}<i className="el-icon-arrow-down margin-left-10"></i></p>
+                                :null
+                        }
                     </div>
                 </div>
             </div>

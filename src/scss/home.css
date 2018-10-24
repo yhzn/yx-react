@@ -67,3 +67,20 @@ position: relative;
 .home li.active i{
     color:#8e959d;
 }
+.home .sys-list li .warn{
+    padding:3px;
+    margin-top: 20px;
+    align-self: flex-start;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 100%;
+    color:#ffffff;
+    background: #FF0000;
+}
+.el-message-box .el-message-box__btns .applyBtn{
+    margin-left:0;
+    width:100%;
+    border: none;
+    background:#e16666;
+
+}

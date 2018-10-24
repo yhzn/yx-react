@@ -1,14 +1,10 @@
-import $ from "jquery"
 import React, { Component } from 'react';
 import wx from '../image/wx.png'
-import {getCodeTime,getCookie,setCookie,formData,baseUrl} from "../tool/tool";
+import {getCodeTime,getCookie,setCookie,baseUrl} from "../tool/tool";
 import {Link} from 'react-router-dom'
 import {Button,Loading,MessageBox} from "element-react"
 import "whatwg-fetch"
 import qs from "qs";
-function shoeData(res){
-    console.log(res);
-}
 export class Login extends Component {
     constructor (props){
         super(props);
@@ -30,39 +26,6 @@ export class Login extends Component {
         }
     }
     getData = (url,parameter) => {
-        let _this=this;
-        // $.ajax({
-        //     url:url,
-        //     method:"post",
-        //     data:parameter,
-        //     success:function(data){
-        //         _this.setState({loading:false});
-        //         switch (data.code){
-        //             case 201:
-        //                 _this.setState({errPhone:"用户名不存在"});
-        //                 break;
-        //             case 202:
-        //                 _this.setState({errPassword:"密码错误"});
-        //                 break;
-        //             case 301:
-        //                 _this.setState({errCode:"验证码失效，请获取新验证码"});
-        //                 break;
-        //             case 0:
-        //                 setCookie("token",JSON.stringify(data.msg),10);
-        //                 _this.props.history.push( '/home',null);
-        //                 break;
-        //             default :
-        //                 MessageBox.alert("登录失败，请重新登录");
-        //                 break;
-        //
-        //         }
-        //     },
-        //     error:function(err){
-        //         _this.setState({loading:false});
-        //         MessageBox.alert("登录失败，请重新登录");
-        //     }
-        // })
-
         fetch(url,{
             method:"post",
             headers: {
@@ -72,7 +35,7 @@ export class Login extends Component {
         })
         .then(response => {
             this.setState({loading:false});
-            if(response.status==200){
+            if(response.status===200){
                 return response.json()
             }
         })
@@ -88,7 +51,6 @@ export class Login extends Component {
                     this.setState({errCode:"验证码失效，请获取新验证码"});
                     break;
                 case 0:
-                    MessageBox.alert("登录成功");
                     setCookie("token",JSON.stringify(data.msg),10);
                     this.props.history.push( '/home',null);
                     break;
@@ -191,25 +153,10 @@ export class Login extends Component {
         }
         this.getData(url,parameter);
     }
-    sub = () => {
-        // $("head").append("<script src='http://192.168.1.109:8005/api/system/modules?callback=showData'><\/script>");
-       $.ajax({
-           url:"http://192.168.1.109:8005/api/verifyCode/sendCode_login",
-           success:function(data){
-               console.log("成功");
-               console.log(data);
-           },
-           error:function(err){
-               console.log("失败")
-               console.log(err)
-           }
-       })
-    }
     render(){
         return (
             <div className="login">
                 <div className="logo">
-                    {/*<Button type="info" onClick={this.sub}>反向代理测试</Button>*/}
                     <p onClick={this.toggleLoginMethod}>
                         {
                             this.state.loginMethod?`短信登录`:`密码登录`

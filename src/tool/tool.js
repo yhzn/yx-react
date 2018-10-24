@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 import {MessageBox} from "element-react";
 import qs from "qs";
 import "whatwg-fetch";
@@ -34,7 +32,7 @@ export let getCodeTime = (_this,url,parameter) => {
         body: qs.stringify(parameter)
     })
     .then((res)=>{
-        if(res.status==200){
+        if(res.status===200){
             return res.json()
         }
     })
@@ -96,7 +94,8 @@ export let setCookie = function (name, value, day) {
 export let getCookie = (name) => {
     let arr;
     let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg)){
+    arr = document.cookie.match(reg);
+    if (arr){
         return unescape(arr[2]);
 
     }else{

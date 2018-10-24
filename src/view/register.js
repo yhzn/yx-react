@@ -1,8 +1,7 @@
-import $ from "jquery"
 import React, { Component } from 'react';
 import {SelectHospital} from '../component/select';
 import {Button,Loading,MessageBox} from "element-react";
-import {getCodeTime,formData,baseUrl} from "../tool/tool";
+import {getCodeTime,baseUrl} from "../tool/tool";
 import qs from 'qs';
 import "whatwg-fetch";
 export class Register extends Component {
@@ -30,7 +29,7 @@ export class Register extends Component {
         }
     }
     componentDidMount () {
-        if(this.props.match.params.id=="1"){
+        if(this.props.match.params.id==="1"){
             this.setState({
                 registerMethod:true,
             })
@@ -42,34 +41,6 @@ export class Register extends Component {
     }
     getData = (url,parameter) => {
         this.setState({loading:true});
-        // let _this=this;
-        // $.ajax({
-        //     url:url,
-        //     method:"post",
-        //     data:parameter,
-        //     success:function(data){
-        //         _this.setState({loading:false});
-        //         switch (data.code){
-        //             case 303:
-        //                 _this.setState({errPhone:"用户以注册"});
-        //                 break;
-        //             case 301:
-        //                 _this.setState({errCode:"验证码错误，请获取新验证码"});
-        //                 break;
-        //             case 0:
-        //                 _this.setState({registerSuccess:true});
-        //                 break;
-        //             default :
-        //                 MessageBox.alert("注册失败，请重新注册");
-        //                 break;
-        //         }
-        //     },
-        //     error:function(err){
-        //         _this.setState({loading:false});
-        //         MessageBox.alert("注册失败，请重新注册")
-        //     }
-        // })
-
         fetch(url,{
             method:"post",
             headers: {
@@ -79,7 +50,7 @@ export class Register extends Component {
         })
         .then((response) => {
             this.setState({loading:false});
-            if(response.status==200){
+            if(response.status===200){
 
                 return response.json()
             }

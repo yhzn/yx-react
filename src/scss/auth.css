@@ -1,0 +1,139 @@
+.auth .header{
+    margin-bottom: 18px;
+}
+.auth .tab{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    /*border-radius: 5px;*/
+
+}
+.auth .tab section{
+    height:28px;
+    width:100px;
+    color:#f0924d;
+    line-height: 28px;
+    text-align: center;
+    border:1px solid #f0924d;
+}
+.auth .tab section:nth-child(1){
+    border-radius: 5px 0 0 5px;
+}
+.auth .tab section:nth-child(2){
+    position: relative;
+    border-radius: 0 5px 5px 0;
+}
+.auth .tab section:nth-child(2) span {
+    position: absolute;
+    height: 23px;
+    width: 23px;
+    font-size: 12px;
+    line-height: 23px;
+    background: #FF0000;
+    color: #ffffff;
+    border-radius: 100%;
+    top: -13px;
+}
+.auth .tab section.active{
+    color:#ffffff;
+    background:#f0924d;
+}
+.auth .scroll{
+    padding-top:3px;
+}
+.auth .auth-list{
+    margin:0 20px 20px;
+    padding-top:5px;
+    box-shadow: 0 0 3px #cccccc;
+    border-radius: 6px;
+    color: #999999;
+}
+.auth .auth-list button{
+    width: 100%;
+    border: none;
+    border-radius:0 0 6px 6px;
+}
+.auth .auth-list .auth-list-container{
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    background: url("../image/nopass.png") no-repeat right 0;
+    background-size: 60px 60px;
+
+}
+.auth .auth-list .auth-list-container.pass{
+    background: url("../image/pass.png") no-repeat right 0;
+    background-size: 60px 60px;
+}
+.auth .auth-list .auth-list-container section p{
+    margin-bottom: 10px;
+}
+.auth .auth-list .auth-list-container section p:last-child{
+    line-height: 23px;
+}
+.auth .auth-list .auth-list-container section:first-child{
+    margin-left: 16px;
+    margin-right: 16px;
+    font-size: 16px;
+    text-align: center;
+}
+.auth .auth-list .auth-list-container section:first-child sup{
+    font-size: 22px;
+    font-weight: bold;
+}
+.auth .auth-list .auth-list-container section:first-child sub{
+    font-size: 18px;
+    font-weight: bold;
+
+}
+.auth .auth-list .auth-list-container section:first-child span{
+    font-size: 30px;
+}
+.auth .auth-list .auth-list-container section:last-child{
+    flex-grow: 1;
+    margin-right: 62px;
+}
+.auth .auth-list .auth-list-container section:last-child p:first-child{
+    float: left;
+    width:50px;
+
+}
+.auth .wait-list section:first-child{
+    margin:5px 10px 0;
+}
+.auth .wait-list section p{
+    margin-bottom: 16px;
+}
+.auth .wait-list section p:first-child{
+    float: left;
+    width: 50px;
+
+}
+.auth .wait-list section:last-child{
+    display: flex;
+    /*flex-grow: 1;*/
+}
+.auth .wait-list section:last-child button{
+    margin-left: 0;
+}
+.auth .wait-list section:last-child button:first-child{
+    border-top: 1px solid #cccccc;
+    color:#FF0000;
+    border-radius: 0 0 0 5px;
+}
+.auth .wait-list section:last-child button:last-child{
+    border-radius: 0 0 5px 0;
+}
+.auth .auth-container{
+    height: calc(100vh - 106px);
+    overflow: hidden;
+}
+.auth .no-data{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height:300px;
+    color:#999999;
+    background: url("../image/nodata.png") no-repeat center 60px;
+    background-size: 190px 200px;
+}
