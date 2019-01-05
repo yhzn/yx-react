@@ -1,0 +1,32 @@
+
+.file-list ul {
+    margin: 0 10px;
+}
+.file-list ul li{
+    border-bottom: 1px solid #eaeaea;
+}
+.file-list ul li a {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    font-size: 18px;
+    color: #666666;
+}
+.file-list ul li a span:first-child{
+    flex-grow: 1;
+}
+.file-list ul li a span:last-child{
+    width: 170px;
+    text-align: right;
+}
+.file-list ul li a.active{
+     color:#ff0000;
+ }
+
+.flex-container .file-list .container{
+    height:calc(100vh - 200px);
+}
+.file-list .page{
+    display: flex;
+    justify-content: center;
+}

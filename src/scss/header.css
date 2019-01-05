@@ -25,10 +25,7 @@
 .header .right{
 
   width: 120px;
-  text-align: right;
-}
-.header .right div{
-  width:100%;
+
 }
 .header .right i{
   font-size: 12px;

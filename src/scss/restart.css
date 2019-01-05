@@ -1,0 +1,19 @@
+
+.restart ul {
+    padding-top: 10px;
+    margin: 0 10px;
+    border-bottom: 1px solid #eaeaea;
+}
+.restart ul li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.restart ul li button {
+    flex-grow: 1;
+}
+.restart ul li button:first-child{
+     flex-grow: 2;
+     margin-right: 10px;
+ }

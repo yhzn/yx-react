@@ -1,7 +1,44 @@
 import {MessageBox} from "element-react";
 import qs from "qs";
 import "whatwg-fetch";
-export let baseUrl="http://localhost:8005/api/";
+
+
+// 生产环境
+let baseUrl="http://210.22.124.170:8005/api/";
+let baseRestartUrl="http://210.22.124.170:8089/";
+let basePrUrl="http://guahao.easthospital.cn:8088/api/";
+
+ if(process.env.NODE_ENV==="development"){
+    baseUrl="/yx/api/";
+    baseRestartUrl="/reset/";
+    basePrUrl="/pr/api/";
+ }
+export {baseUrl,baseRestartUrl,basePrUrl}
+
+export let isBasic = (it) => {
+    return it===null || ( typeof it !== "object" && typeof it !== "array");
+}
+export let clone =  (it) => {
+    if(isBasic(it)){
+        return it;
+}
+    let result = Array.isArray(it) ? [] : {};
+    for (let i in it){
+        result[i]=clone(it[i]);
+    }
+    return result;
+}
+
+let is = (it,type) => {
+    return ({}).toString.call(it)===`[object ${type}]`;
+
+}
+
+export let isFunction = (it) => {
+    return is(it,'Function')
+
+}
+
 export let formData = (parameter) => {
     let formData = new FormData();
     for(let key in parameter){
@@ -39,23 +76,33 @@ export let getCodeTime = (_this,url,parameter) => {
     .then((data)=>{
         switch (data.code){
             case 201:
-                _this.setState({errPhone:"该手机号未注册"});
-                break;
-            case 0:
-                break;
-            default :
-                count=0;
                 clearInterval(_this.timer);
                 _this.setState({
                     codeBtnText:`获取验证码`,
                     getCodeFlag:true
-                })
-                MessageBox.alert("验证码获取失败，请重新获取");
+                });
+                _this.setState({errPhone:"该手机号未注册"});
                 break;
+            case 303:
+                clearInterval(_this.timer);
+                _this.setState({
+                    codeBtnText:`获取验证码`,
+                    getCodeFlag:true
+                });
+                _this.setState({errPhone:"该手机号已注册"});
+                break;
+            case 0:
+                break;
+            default :
+                clearInterval(_this.timer);
+                _this.setState({
+                    codeBtnText:`获取验证码`,
+                    getCodeFlag:true
+                });
+                MessageBox.alert("验证码获取失败，请重新获取");
         }
     })
     .catch(()=>{
-            count=60;
             clearInterval(_this.timer);
             _this.setState({
                 codeBtnText:`获取验证码`,
@@ -71,7 +118,7 @@ export let getCodeTime = (_this,url,parameter) => {
         _this.setState({
             codeBtnText:`${--count} s后重新获取`
         })
-        if(count===0){
+        if(count<=0){
             clearInterval(_this.timer);
             _this.setState({
                 codeBtnText:`获取验证码`,
@@ -92,9 +139,8 @@ export let setCookie = function (name, value, day) {
 };
 
 export let getCookie = (name) => {
-    let arr;
     let reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    arr = document.cookie.match(reg);
+    let arr= document.cookie.match(reg);
     if (arr){
         return unescape(arr[2]);
 
@@ -105,3 +151,9 @@ export let getCookie = (name) => {
 export let delCookie = function (name) {
          setCookie(name, ' ', -1);
 };
+export let getUrlParam = function (name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}

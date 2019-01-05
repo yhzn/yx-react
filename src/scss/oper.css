@@ -1,0 +1,28 @@
+.oper ul{
+    padding:20px 15px;
+}
+.oper ul li{
+    display: flex;
+    align-items: center;
+    height: 98px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 5px 5px 18px #aeb8d1, -5px 5px 18px #aeb8d1, -5px -5px 18px #aeb8d1, 5px -5px 18px #aeb8d1;
+
+}
+.oper ul li p:first-child{
+    width:68px;
+    height:68px;
+    border-radius: 60%;
+    text-align: center;
+    line-height: 68px;
+    margin: 0 10px;
+    background: linear-gradient(#fcfa96, #f4a45e);
+}
+.oper ul li:nth-child(even) p:first-child{
+    background: linear-gradient(#a9def6, #3fe8e6);
+}
+.oper ul li.active{
+    /*color:#e3e3e3;*/
+    /*background:#b6b6b6;*/
+}

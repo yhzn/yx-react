@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Header} from "../component/header";
 import {MessageBox,Loading} from "element-react";
 import BScroll from 'better-scroll';
+
+
 import {getCookie,delCookie,baseUrl} from "../tool/tool";
 import "whatwg-fetch";
 import qs from "qs";
@@ -9,28 +11,39 @@ export class Home extends Component {
     constructor (props){
         super(props);
         this.state={
-            elementList:null,
             loading:false,
             jumpToFlag:false,
-            data:{
+            data:[],
+            dataHis:{
                 user:"",
                 userImg:"",
-                hospital:"",
-                system:[]
-            }
+                options:[]
+            },
+            options:[
+                {value:1,text:"东方医院南院东方医院南院东方医院南院"},
+                {value:2,text:"xi"}
+            ],
+            value:""
         }
+        this.hisId=null;
     }
     componentDidMount () {
-        this.getData();
+        this.scroll=new BScroll(this.refs.scroll,{
+            scrollY:true,
+            click:true,
+            probeType:3,
+        })
+        this.getHisData();
 
     }
     jumpTo=(id,url,auth,index)=>{
-        if(this.state.jumpToFlag){
-           return false;
-        }
-        this.setState({jumpToFlag:true});
+
         if(!auth){
-            let applyAuth=this.state.data.system[index].applyAuth;
+            if(this.state.jumpToFlag){
+                return false;
+            }
+            this.setState({jumpToFlag:true});
+            let applyAuth=this.state.data[index].applyAuth;
             MessageBox.confirm(applyAuth?"授权申请已提交，请耐心等待":"无操作权限，如需操作请申请授权",'提示',{
                 showCancelButton: false,
                 type: 'warning',
@@ -41,21 +54,26 @@ export class Home extends Component {
                 if(!applyAuth){
                    this.getAuth(id);
                 }
+            }).catch(()=>{
+                this.setState({jumpToFlag:false});
             });
             return false;
         }
-        if(this.state.data.system[index].text==="系统设置"){
-            this.props.history.push( '/auth',null);
-            return false;
+        if(!!url){
+            if(url.indexOf("http")===0){
+                window.location.href=url;
+            }else{
+                this.props.history.push(`${url}/${id}`,null);
+            }
         }
-        window.location.href=url;
+
     }
     getAuth = (id) => {
         fetch(baseUrl+"system/authorization/apply",{
             method:"post",
             headers:{
                 "Content-Type": "application/x-www-form-urlencoded",
-                Token:getCookie("token")
+                "Token":getCookie("token")
             },
             body:qs.stringify({
                 id:id
@@ -69,21 +87,83 @@ export class Home extends Component {
         })
         .then((data)=>{
             if(data.code===0){
-                this.getData();
-                MessageBox.alert(data.msg)
-            }else{
-                MessageBox.alert(data.msg)
+                this.getData(this.hisId);
             }
+            MessageBox.alert(data.msg);
+
         })
         .catch(()=>{
             MessageBox.alert("操作失败")
         })
     }
-    getData = () => {
-        let hasCookie=getCookie("token");
+
+    getHisData = () => {
+        let hasCookie = getCookie("token");
+        if (hasCookie) {
+            this.setState({loading: true});
+            fetch(baseUrl + "account/getInfo", {
+                headers: {
+                    Token: hasCookie
+                }
+            })
+                .then((response) => {
+                    if (response.status === 200) {
+                        return response.json()
+                    }else{
+                        MessageBox.msgbox({
+                            title: '消息',
+                            message: '用户验证失效，请重新登陆',
+                            showCancelButton: false
+                        }).then(action => {
+                            delCookie("token");
+                            this.props.history.push( '/',null);
+                        })
+
+                    }
+                })
+                .then((data) => {
+                    if (data.code === 0) {
+                        this.setState({dataHis: data.msg,value:data.msg.options[0].value});
+                        this.hisId=data.msg.options[0].value;
+                        return this.hisId;
+                    } else {
+                        this.setState({loading: false});
+                        MessageBox.msgbox({
+                            title: '消息',
+                            message: '用户验证失效，请重新登陆',
+                            showCancelButton: false
+                        }).then(action => {
+                            delCookie("token");
+                            this.props.history.push( '/',null);
+                        })
+
+                    }
+                })
+                .then((id) => {
+                    this.getData(id)
+                })
+                .catch((err) => {
+                    this.setState({loading: false});
+                    MessageBox.msgbox({
+                        title: '消息',
+                        message: '用户验证失效，请重新登陆',
+                        showCancelButton: false
+                    }).then(action => {
+                        delCookie("token");
+                        this.props.history.push( '/',null);
+                    })
+
+                })
+
+        }else{
+            this.props.history.push( '/',null);
+        }
+    }
+    getData = (id) => {
+        this.setState({loading: true});
+        let hasCookie = getCookie("token");
         if(hasCookie){
-            this.setState({loading:true});
-            fetch(baseUrl+"system/modules",
+            fetch(baseUrl+"system/modules?id="+id,
                 {
                     headers:{
                         Token:hasCookie
@@ -98,18 +178,12 @@ export class Home extends Component {
                 .then((data)=>{
                     if(data.code===0){
                         this.setState({data:data.msg});
-                        this.setState({elementList:this.sysList()});
                         this.timer=setTimeout(()=>{
-                            new BScroll(this.refs.scroll,{
-                                scrollY:true,
-                                click:true,
-                                probeType:3,
-                            }).on('scroll',(pos)=>{
-                            })
+                            if(!!this.refs.scroll){
+                                this.scroll.refresh();
+                            }
                             clearTimeout(this.timer)
-
-                        },100)
-
+                        },600)
                     }else{
                         MessageBox.msgbox({
                             title: '消息',
@@ -132,43 +206,37 @@ export class Home extends Component {
                         this.props.history.push( '/',null);
                     })
                 })
-        }else{
-            this.props.history.push( '/',null);
-
         }
     }
-    goBack = () => {
-        this.props.history.goBack();
-    }
-    sysList () {
-        const liElement=this.state.data.system.map((item,index)=>(
-            <li key={index} className={item.auth?"":"active"} onClick={this.jumpTo.bind(this,item.id,item.href,item.auth,index)}>
-                <i className={`icon iconfont ${item.icon}`}> </i>
-                <p>{item.text}</p>
-                {item.num?<p className="warn">{item.num}</p>:null}
-            </li>)
-        );
-        return liElement;
+    selectChange = (value) => {
+        this.hisId=value;
+        this.getData(value);
     }
     render() {
         return (
             <div>
-                <Header goBack={this.goBack} hosiptal={this.state.data.hospital} title="医信平台"/>
+                <Header title="医信平台" value={this.state.value} options={this.state.dataHis.options} del={true} onSelectChange={this.selectChange}/>
                 <div className="home container" ref="scroll">
                     <div>
                         <div className="login-state">
                             <div className="user">
-                                <div><img src={this.state.data.userImg} alt=""/></div>
+                                <div><img src={this.state.dataHis.userImg} alt=""/></div>
                             </div>
-                            <p>{this.state.data.user}</p>
+                            <p>{this.state.dataHis.user}</p>
                             <p>你好，你已成功登陆该平台</p>
                         </div>
                         <ul className="sys-list cleanfix">
-                            {this.state.elementList}
+                            {
+                                this.state.data.map((item,index)=>(
+                                    <li key={index} className={item.auth?"":"active"} onClick={this.jumpTo.bind(this,item.id,item.href,item.auth,index)}>
+                                        <i className={`icon iconfont ${item.icon}`}> </i>
+                                        <p>{item.text}</p>
+                                        {item.num?<p className="warn">{item.num}</p>:null}
+                                    </li>))
+                            }
                         </ul>
                         {
-                            this.state.loading?
-                                <Loading fullscreen={true} text="数据加载中......"></Loading>:null
+                            this.state.loading && <Loading fullscreen={true} text="数据加载中......" />
                         }
                     </div>
                 </div>

@@ -8,6 +8,6 @@ html,body,#root,.flex-container{
   flex-direction: column;
 }
 .flex-container .container{
-  flex-grow: 1;
+  height:calc(100vh - 46px);
   overflow: hidden;
 }

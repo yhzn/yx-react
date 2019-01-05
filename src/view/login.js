@@ -3,6 +3,7 @@ import wx from '../image/wx.png'
 import {getCodeTime,getCookie,setCookie,baseUrl} from "../tool/tool";
 import {Link} from 'react-router-dom'
 import {Button,Loading,MessageBox} from "element-react"
+import {getUrlParam} from "../tool/tool";
 import "whatwg-fetch"
 import qs from "qs";
 export class Login extends Component {
@@ -21,11 +22,15 @@ export class Login extends Component {
         }
     }
     componentDidMount () {
-        if(getCookie("token")){
+        let urlParam=getUrlParam("code");
+        if(!!urlParam){
+            this.getData(`${baseUrl}account/getUserAccessToken/wxCode`,{code:urlParam});
+        }else if(getCookie("token")){
             this.props.history.push( '/home',null);
         }
     }
     getData = (url,parameter) => {
+        this.setState({loading:true});
         fetch(url,{
             method:"post",
             headers: {
@@ -100,9 +105,7 @@ export class Login extends Component {
             this.setState({password:e.target.value.trim()});
             if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
                 this.setState({errPassword:"密码为6-18位的字母、数字、下划线"});
-
             }
-
         }
         if(v==="code"){
             this.setState({errCode:""});
@@ -198,7 +201,7 @@ export class Login extends Component {
                      </li>
                 </ul>
                 {this.state.loading?
-                    <Loading fullscreen={true} text="登陆中......" loading={false}></Loading>:null}
+                    <Loading fullscreen={true} text="登陆中......" loading={true}></Loading>:null}
             </div>
         )
     }

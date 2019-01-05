@@ -125,7 +125,7 @@
     border-radius: 0 0 5px 0;
 }
 .auth .auth-container{
-    height: calc(100vh - 106px);
+    height: calc(100vh - 176px);
     overflow: hidden;
 }
 .auth .no-data{
@@ -136,4 +136,8 @@
     color:#999999;
     background: url("../image/nodata.png") no-repeat center 60px;
     background-size: 190px 200px;
+}
+.auth .page{
+    display: flex;
+    justify-content: center;
 }

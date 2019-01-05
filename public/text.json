@@ -4,10 +4,10 @@
     "userImg":"",
     "hospital":1,
     "system":[
-      {"href":null,"auth":true,"icon":"icon-xitongjiaoseyingyong","text":"总值班系统"},
+      {"id":28,"applyAuth":true,"href":"/print","auth":true,"icon":"icon-xitongjiaoseyingyong","text":"总值班系统"},
       {"href":"http://210.22.124.17:8005/index","auth":true,"icon":"icon-xitongguanli-","text":"服务器监控"},
-      {"href":null,"auth":true,"icon":"icon-caozuoxitong","text":"危急值管理"},
-      {"href":null,"auth":true,"icon":"icon-apixitongrizhi","text":"病例管理"},
+      {"href":null,"applyAuth":true,"auth":false,"icon":"icon-caozuoxitong","text":"危急值管理"},
+      {"href":null,"auth":false,"icon":"icon-apixitongrizhi","text":"病例管理"},
       {"href":null,"auth":true,"icon":"icon-drgspingtairuanjianxitong37","text":"委员会投票"},
       {"href":null,"auth":false,"icon":"icon-xitongguanli","text":"系统设置"},
       {"href":null,"auth":true,"icon":"icon-xitongpeizhi","text":"自动巡检"},

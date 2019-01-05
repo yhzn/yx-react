@@ -25,11 +25,28 @@ export class Register extends Component {
             errNewPassWord:"",
             errSurePassWord:"",
             errHospital:"",
-            loading:false
-        }
+            loading:false,
+            options: [],
+
+        };
+        this.scrollFlag=true;
     }
     componentDidMount () {
         if(this.props.match.params.id==="1"){
+            fetch(baseUrl+"hospital/getList")
+                .then((response) => {
+                    this.setState({loading:false});
+                    if(response.status===200){
+                        if(response.headers.get('content-type').indexOf("text/html")===0){
+                            return [];
+                        }else{
+                            return response.json();
+                        }
+                    }
+                })
+                .then((data) => {
+                    this.setState({options:data});
+                })
             this.setState({
                 registerMethod:true,
             })
@@ -39,6 +56,7 @@ export class Register extends Component {
             })
         }
     }
+
     getData = (url,parameter) => {
         this.setState({loading:true});
         fetch(url,{
@@ -65,6 +83,7 @@ export class Register extends Component {
                     break;
                 case 0:
                     this.setState({registerSuccess:true});
+                    // this.goBack();
                     break;
                 default :
                     MessageBox.alert("注册失败，请重新注册");
@@ -91,6 +110,15 @@ export class Register extends Component {
         getCodeTime(this,url,parameter);
     }
     getValue = (v,e) => {
+        if(!this.scrollFlag){
+            this.setTimeO=setTimeout(()=>{
+                this.scrollFlag=true;
+                this.refs.register.style.marginTop="0px";
+                this.scrollTop((this.refs.register.offsetHeight/2)-50,0,1)
+                clearTimeout(this.setTimeO);
+            },100)
+        }
+
         if(this.state.registerMethod) {
             if (v === "user") {
                 this.setState({errUser:""});
@@ -138,10 +166,10 @@ export class Register extends Component {
                 return false;
             }
             if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
-                this.setState({errNewPassWord:"密码为6-18位的字母、数字、下划线"})
-                this.setState({newPassWord:""})
+                this.setState({errNewPassWord:"密码为6-18位的字母、数字、下划线"});
+                this.setState({newPassWord:""});
             }else{
-                this.setState({newPassWord:e.target.value.trim()})
+                this.setState({newPassWord:e.target.value.trim()});
 
             }
         }
@@ -187,7 +215,7 @@ export class Register extends Component {
         }
 
         if(this.state.registerMethod) {
-            if(!this.state.hospital.trim()){
+            if(!this.state.hospital){
                 this.setState({errHospital:"请选择院区"});
                 flag=false;
             }
@@ -218,15 +246,46 @@ export class Register extends Component {
     goBack = () => {
         this.props.history.goBack();
     }
+    scrollTop = (start,end,f=-1) => {
+        let speed=5;
+        let height=start;
+        this.timer=setInterval(()=>{
+            if(f<0){
+                height+=(f*speed);
+                this.refs.register.style.marginTop=height+"px";
+                if(f*height>=end){
+                    clearInterval(this.timer);
+                }
+            }else{
+                height-=speed;
+                this.refs.register.style.marginTop=-1*height+"px";
+                if(height<=0){
+                    this.refs.register.style.marginTop="0px";
+                    clearInterval(this.timer);
+                }
+            }
+
+        },60/1000)
+    }
+    toTop = (e) => {
+        if(this.setTimeO){
+            clearTimeout(this.setTimeO);
+        }
+        if(this.scrollFlag){
+            this.scrollFlag=false;
+            this.scrollTop(0,(this.refs.register.offsetHeight/2)-50);
+        }
+
+    }
     render () {
         return (
-                <section className="register">
+                <section className="register" ref="register">
                     {
                         this.state.registerSuccess?
                             <section>
                                 <section className="success">
                                     <p>
-                                        注册信息已提交，审批需要两天左右，请耐心等待
+                                        注册成功
                                     </p>
                                 </section>
                                 <Button type="success" size="large" onClick={this.goBack}>返回</Button>
@@ -241,7 +300,7 @@ export class Register extends Component {
                                     {
                                         this.state.registerMethod?
                                             <li className="select">
-                                                <SelectHospital onSelectChange={this.selectChange} />
+                                                <SelectHospital onSelectChange={this.selectChange} value="" options={this.state.options}/>
                                                 <p className="err">{this.state.errHospital}</p>
                                             </li>
                                             :null
@@ -260,18 +319,18 @@ export class Register extends Component {
 
                                     </li>
                                     <li className="code">
-                                        <input type="text" placeholder="验证码" onBlur={this.getValue.bind(this,"code")}/>
+                                        <input type="text" placeholder="验证码" onBlur={this.getValue.bind(this,"code")} onFocus={this.toTop}/>
                                         <p className={`get-code ${this.state.getCodeFlag?"":"active"}`} onClick={this.getCode}>{this.state.codeBtnText}</p>
                                         <p className="err">{this.state.errCode}</p>
 
                                     </li>
 
                                     <li>
-                                        <label><input type="password" placeholder="请输入新密码" onBlur={this.getValue.bind(this,"newPassWord")}/></label>
+                                        <label><input type="password" placeholder="请输入新密码" onBlur={this.getValue.bind(this,"newPassWord")} onFocus={this.toTop}/></label>
                                         <p className="err">{this.state.errNewPassWord}</p>
                                     </li>
                                     <li>
-                                        <label><input type="password" placeholder="请确认新密码" onBlur={this.getValue.bind(this,"surePassWord")}/></label>
+                                        <label><input type="password" placeholder="请确认新密码" onBlur={this.getValue.bind(this,"surePassWord")} onFocus={this.toTop}/></label>
                                         <p className="err">{this.state.errSurePassWord}</p>
                                     </li>
 

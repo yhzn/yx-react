@@ -1,0 +1,38 @@
+.print .header .el:nth-child(2){
+    margin-left: 0;
+}
+.print .search{
+    padding:6px 10px;
+    background:linear-gradient(to right, #37c3fe , #2f8fff);
+}
+.print .header .right{
+    width:80px;
+}
+.print ul {
+    font-size: 16px;
+    margin: 0 10px 20px;
+}
+.print ul li{
+    display: flex;
+    align-items: center;
+    height:50px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.print ul li p:first-child{
+    padding:0 10px;
+    color: #000000;
+}
+.print ul li p:last-child{
+    color:#045fa6;
+}
+.print .reset{
+    margin: 0 20px;
+}
+.print .reset button{
+    width:100%;
+}
+.print .err{
+    color:#ff0000;
+    padding:20px;
+    text-align: center;
+}

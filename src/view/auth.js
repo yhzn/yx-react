@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Header} from "../component/header";
-import {MessageBox,Button,Loading} from "element-react";
+import {MessageBox,Button,Loading,Pagination} from "element-react";
 import BScroll from 'better-scroll';
 import {baseUrl,getCookie} from "../tool/tool";
 import "whatwg-fetch";
@@ -15,35 +15,44 @@ export class Auth extends Component {
             queueMsg:[],
             waitNum:0,
             loading:false,
+            currentPage:1,
+            totalPage:1,
+            solveMsgPage:1,
+            solveMsgTotalPage:1,
+            queueMsgPage:1,
+            queueMsgTotalPage:1,
             hasCookie:getCookie("token")
         }
     }
     componentDidMount () {
-        this.timer=setTimeout(()=>{
-            new BScroll(this.refs.scroll,{
-                scrollY:true,
-                click:true,
-                probeType:3,
-            }).on('scroll',(pos)=>{
-            })
-            clearTimeout(this.timer)
-
-        },100)
-        this.getSolveData();
-        this.getQueueData();
-
+        this.scroll=new BScroll(this.refs.scroll,{
+            scrollY:true,
+            click:true,
+            probeType:3,
+        });
+        this.scroll.on("scroll",(pos)=>{
+            // console.log(1)
+        });
+        this.getSolveData(this.state.solveMsgPage);
+        this.getQueueData(this.state.queueMsgPage);
     }
+
     toggleTab = (boolean) => {
         if(boolean){
-            this.setState({toggleTab:true});
+            this.setState({
+                toggleTab:true,
+                currentPage:this.state.solveMsgPage,
+                totalPage:this.state.solveMsgTotalPage
+            });
         }else{
-            this.setState({toggleTab:false});
+            this.setState({
+                toggleTab:false,
+                currentPage:this.state.queueMsgPage,
+                totalPage:this.state.queueMsgTotalPage
+            });
         }
     }
-    goBack = () =>{
-        this.props.history.goBack();
-    }
-    sureAuth = (id,pass) => {
+    sureAuth = (id,pass,user,msg) => {
         if(this.state.loading){
             return false;
         }
@@ -67,17 +76,17 @@ export class Auth extends Component {
         })
         .then((data)=>{
             if(data.code===0){
-                this.getSolveData();
-                this.getQueueData();
+                this.getSolveData(this.state.solveMsgPage);
+                this.getQueueData(this.state.queueMsgPage);
                 switch (pass){
                     case 0:
-                        MessageBox.alert("处理完成");
+                        MessageBox.alert(`"${user}"${msg}的权限未审核通过，如需重新授权，请在“已处理”进行确认授权`);
                         break;
                     case 1:
-                        MessageBox.alert("该人以添加操作权限");
+                        MessageBox.alert(`"${user}"${msg}已审核通过`);
                         break;
                     case 2:
-                        MessageBox.alert("该人员操作权限以取消");
+                        MessageBox.alert(`"${user}"${msg}的权限已取消`);
                         break;
                     default :
                         MessageBox.alert(data.msg);
@@ -93,10 +102,8 @@ export class Auth extends Component {
             MessageBox.alert("操作失败");
         })
     }
-    getQueueData = () => {
-        // baseUrl+"system/authorization/preprocess"
-        // this.setState({loading:true});
-        fetch(baseUrl+"system/authorization/preprocess",{
+    getQueueData = (page) => {
+        fetch(baseUrl+"system/authorization/preprocess?page="+page,{
             headers:{
                 Token:this.state.hasCookie
             }
@@ -109,15 +116,21 @@ export class Auth extends Component {
         })
         .then((data)=>{
             if(data.code===0){
-                this.setState({queueMsg:data.msg.preprocess,waitNum:data.msg.num});
+                this.setState({
+                    queueMsg:data.msg.preprocess,
+                    waitNum:data.msg.num,
+                    queueMsgPage:page,
+                    queueMsgTotalPage:data.msg.totalPage,
+                });
                 this.qTimer=setTimeout(()=>{
-                     this.timer.refresh();
-                     clearTimeout(this.qTimer);
+                    if(!!this.refs.scroll){
+                        this.scroll.refresh();
+                    }
+                    clearTimeout(this.qTimer);
                 },600);
             }
             else{
                 MessageBox.alert(data.msg);
-
             }
         })
         .catch(()=>{
@@ -125,11 +138,10 @@ export class Auth extends Component {
             MessageBox.alert("数据获取失败");
         })
     }
-
-    getSolveData = () => {
+    getSolveData = (page) => {
         // this.setState({loading:true});
-        // baseUrl+"system/auth/processed"
-        fetch(baseUrl+"system/authorization/processed",{
+        // baseUrl+"system/authorization/processed"
+        fetch(baseUrl+"system/authorization/processed?page="+page,{
              headers:{
                  Token:this.state.hasCookie
              }
@@ -142,9 +154,15 @@ export class Auth extends Component {
          })
          .then((data)=>{
              if(data.code===0){
-                 this.setState({solveMsg:data.msg.processed})
+                 this.setState({
+                     solveMsg:data.msg.processed,
+                     solveMsgPage:page,
+                     solveMsgTotalPage:data.msg.totalPage,
+                 });
                  this.sTimer=setTimeout(()=>{
-                     this.timer.refresh();
+                     if(!!this.refs.scroll){
+                         this.scroll.refresh();
+                     }
                      clearTimeout(this.sTimer);
                  },600);
              }else{
@@ -156,14 +174,24 @@ export class Auth extends Component {
              MessageBox.alert("数据获取失败");
          })
     }
+    getPageData = (page) => {
+        if(this.state.toggleTab){
+            this.getSolveData(page);
+        }else{
+            this.getQueueData(page);
+        }
+    }
+
     render () {
-        let {toggleTab,solveMsg,queueMsg,waitNum} = this.state;
+        let {toggleTab,solveMsg,queueMsg,waitNum,currentPage,totalPage} = this.state;
         return (
             <section className="auth">
-                <Header goBack={this.goBack} title="医信平台"/>
+                <Header title="医信平台"/>
                 <section className="tab">
-                    <section className={toggleTab?"active":""} onClick={this.toggleTab.bind(this,true)}>以处理</section>
-                    <section className={toggleTab?"":"active"} onClick={this.toggleTab.bind(this,false)}>待处理{waitNum!==0?<span>{waitNum}</span>:null} </section>
+                    <section className={toggleTab?"active":""} onClick={this.toggleTab.bind(this,true)}>已处理</section>
+                    <section className={toggleTab?"":"active"} onClick={this.toggleTab.bind(this,false)}>
+                        待处理{waitNum!==0?<span>{waitNum}</span>:null}
+                    </section>
                 </section>
                 <section className="auth-container" ref="scroll">
                     {toggleTab?
@@ -184,9 +212,9 @@ export class Auth extends Component {
                                         </section>
                                         {
                                             item.state?
-                                                <Button type="info" onClick={this.sureAuth.bind(this,item.id,2)}>取消授权</Button>
+                                                <Button type="info" onClick={this.sureAuth.bind(this,item.id,2,item.user,item.describe)}>取消授权</Button>
                                                 :
-                                                <Button type="danger" onClick={this.sureAuth.bind(this,item.id,1)}>确认授权</Button>
+                                                <Button type="danger" onClick={this.sureAuth.bind(this,item.id,1,item.user,item.describe)}>确认授权</Button>
                                         }
                                     </section>
                                 ))
@@ -207,8 +235,8 @@ export class Auth extends Component {
                                             <p>{item.describe}</p>
                                         </section>
                                         <section>
-                                            <Button onClick={this.sureAuth.bind(this,item.id,0)}>暂不授权</Button>
-                                            <Button type="danger" onClick={this.sureAuth.bind(this,item.id,1)}>确认授权</Button>
+                                            <Button onClick={this.sureAuth.bind(this,item.id,0,item.user,item.describe)}>暂不授权</Button>
+                                            <Button type="danger" onClick={this.sureAuth.bind(this,item.id,1,item.user,item.describe)}>确认授权</Button>
                                         </section>
                                     </section>
                                 ))
@@ -221,9 +249,16 @@ export class Auth extends Component {
                     }
 
                 </section>
+                {totalPage>1?
+                    <section className="page">
+                        <Pagination layout="prev, pager, next" currentPage={currentPage} pageSize={1} total={totalPage} onCurrentChange={this.getPageData}/>
+                    </section>
+                    :
+                    null
+                }
                 {
                     this.state.loading?
-                        <Loading fullscreen={true} text="操作处理中......"></Loading>:null
+                        <Loading fullscreen={true} text="操作处理中......" />:null
                 }
             </section>
         )
