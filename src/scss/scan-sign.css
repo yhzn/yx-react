@@ -1,0 +1,48 @@
+.scan-sign{
+    height:100%;
+    font-size: 16px;
+    background: url("../image/scan-sign.png") no-repeat;
+    background-size: 100% 100%;
+}
+.scan-sign h1{
+    padding-top: 100px;
+    margin-bottom: 26px;
+    font-size: 26px;
+    color:#ffffff;
+    text-align: center;
+}
+.scan-sign ul{
+    padding:20px 0;
+    margin: 0 30px 16px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 5px;
+
+}
+.scan-sign ul li{
+    margin: 0 10px;
+}
+.scan-sign ul li input{
+    padding-left:6px;
+    width:calc(100% - 6px);
+    height:39px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(236,236,236,0.6);
+}
+.scan-sign ul li button{
+    width:100%;
+    font-size: 16px;
+}
+.scan-sign ul li p{
+    height:20px;
+    line-height: 20px;
+    color:#ff0000;
+}
+.scan-sign .tool{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 30px;
+}
+.scan-sign .tool p:last-child a{
+    color:#ff0000;
+}

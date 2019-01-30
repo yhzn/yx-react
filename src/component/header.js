@@ -6,8 +6,11 @@ class HeaderC extends Component {
     goBack = () => {
         if(this.props.del){
             delCookie("token");
+            this.props.history.push( '/',null);
+
+        }else{
+            this.props.history.goBack();
         }
-        this.props.history.goBack();
     }
     selectChange = (value) => {
         this.props.onSelectChange(value);

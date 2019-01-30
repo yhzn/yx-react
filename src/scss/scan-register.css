@@ -1,0 +1,87 @@
+.scan-register {
+    font-size: 16px;
+}
+.scan-register header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    height:46px;
+    font-size: 18px;
+    border-bottom: 1px solid #cccccc;
+}
+.scan-register header i{
+    font-size: 22px;
+    padding:10px;
+}
+.scan-register header h3{
+    margin-right: 42px;
+    flex-grow: 1;
+    text-align: center;
+}
+.scan-register ul{
+    margin: 0 30px 30px;
+}
+.scan-register li{
+    border-bottom: 1px solid #cccccc;
+}
+.scan-register input{
+    padding-left:6px;
+    height:32px;
+    width:100%;
+    border:none;
+}
+.scan-register .code{
+    display: flex;
+    align-items: center;
+}
+.scan-register .code input{
+    flex-grow: 1;
+    width: auto;
+}
+.scan-register p{
+    height:14px;
+    color:#ff0000;
+    font-size: 14px;
+}
+.scan-register .code p{
+    padding:0 10px;
+    height: 22px;
+    line-height: 23px;
+    border-radius: 3px;
+    color:#e18b33;
+    background: #b6b6b6;
+}
+.scan-register .code p.active{
+    color:#000000;
+}
+.scan-register .btn{
+    margin: 0 30px;
+}
+.scan-register .btn button{
+    width:100%;
+    font-size: 16px;
+}
+.scan-register .in{
+    position: absolute;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0.8);
+}
+.scan-register .in section{
+    padding:50px 10px 20px;
+    background:#ffffff;
+}
+.scan-register .in section input{
+    height:32px;
+    border:1px solid #bfcbd9;
+}
+.scan-register .success{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height:260px;
+    margin-bottom: 20px;
+    background: url("../image/hi.png") no-repeat center;
+    background-size: 320px 180px;
+}

@@ -12,6 +12,10 @@ export let type={
         tips:({name})=>`${name}格式不正确`,
         reg:/^1[3,5,8,4,7]\d{9}$/
     },
+    password:{
+        tips:({name})=>`${name}为6-18位的字母、数字、下划线`,
+        reg:/^[a-zA-Z0-9_]\w{5,17}$/,
+    },
     RMB:{
         tips:({name})=>`${name}只能是数字格式的人民币`,
         reg:/^(([1-9]\d*)|0)(\.\d{0,2})?$/

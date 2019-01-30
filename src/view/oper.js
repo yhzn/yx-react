@@ -3,6 +3,7 @@ import {Header} from "../component/header";
 import BScroll from "better-scroll";
 import {MessageBox,Loading} from "element-react";
 import {baseUrl, getCookie} from "../tool/tool";
+import {ghsfData,scroll} from "../data/data";
 import qs from "qs";
 
 export class Oper extends Component {
@@ -16,6 +17,13 @@ export class Oper extends Component {
         this.perId=this.props.match.params.id
     }
     componentDidMount () {
+
+        ghsfData.endTime=null;
+        ghsfData.startTime=null;
+        ghsfData.value=null;
+        ghsfData.data=[];
+        scroll.startY=0;
+
         this.scroller=new BScroll(this.refs.scroll,{
             scrollY:true,
             click:true,
@@ -64,28 +72,37 @@ export class Oper extends Component {
                 MessageBox.alert("数据加载失败","提示")
             })
     }
-    jumpTo = (id,url,auth,applyAuth) => {
-        // if(!auth){
-        //     if(this.state.jumpToFlag){
-        //         return false;
-        //     }
-        //     this.setState({jumpToFlag:true});
-        //     MessageBox.confirm(applyAuth?"授权申请已提交，请耐心等待":"无操作权限，如需操作请申请授权",'提示',{
-        //         showCancelButton: false,
-        //         type: 'warning',
-        //         confirmButtonText:applyAuth?"确定":"授权申请",
-        //         confirmButtonClass:applyAuth?null:"applyBtn"
-        //     }).then(action => {
-        //         this.setState({jumpToFlag:false});
-        //         if(!applyAuth){
-        //             this.getAuth(id);
-        //         }
-        //     }).catch(()=>{
-        //         this.setState({jumpToFlag:false});
-        //     });
-        //     return false;
-        // }
+    jumpTo = (id,url,auth,applyAuth,icon,text) => {
+        if(!auth){
+            if(this.state.jumpToFlag){
+                return false;
+            }
+            this.setState({jumpToFlag:true});
+            MessageBox.confirm(applyAuth?"授权申请已提交，请耐心等待":"无操作权限，如需操作请申请授权",'提示',{
+                showCancelButton: false,
+                type: 'warning',
+                confirmButtonText:applyAuth?"确定":"授权申请",
+                confirmButtonClass:applyAuth?null:"applyBtn"
+            }).then(action => {
+                this.setState({jumpToFlag:false});
+                if(!applyAuth){
+                    this.getAuth(id);
+                }
+            }).catch(()=>{
+                this.setState({jumpToFlag:false});
+            });
+            return false;
+        }
         if(!!url){
+            if(icon==="重启"){
+                if(text==="服务重启"){
+                    this.props.history.push(`${url}/${id}-2`,null);
+                }else{
+                    this.props.history.push(`${url}/${id}-1`,null);
+                }
+                return false;
+            }
+
             this.props.history.push(`${url}/${id}`,null);
         }
     }
@@ -128,7 +145,7 @@ export class Oper extends Component {
                     <ul>
                         {
                             data.map((item,index) => (
-                                <li className={item.auth?"":"active"} onClick={this.jumpTo.bind(this,item.id,item.href,item.auth,item.applyAuth)} key={index}>
+                                <li className={item.auth?"":"active"} onClick={this.jumpTo.bind(this,item.id,item.href,item.auth,item.applyAuth,item.icon,item.text)} key={index}>
                                     <p>{item.icon}</p>
                                     <p>{item.text}</p>
                                 </li>

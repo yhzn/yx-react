@@ -10,8 +10,10 @@
 }
 .header .el:nth-child(2){
   flex-grow: 1;
-  margin-left:40px;
   text-align: center;
+}
+.home-fix .header .el:nth-child(2){
+  margin-left:40px;
 }
 .header .el h3{
   font-size: 18px;
@@ -22,11 +24,11 @@
   align-items:center;
 
 }
-.header .right{
+.home-fix .header .right{
 
   width: 120px;
 
 }
-.header .right i{
+.home-fix .header .right i{
   font-size: 12px;
 }

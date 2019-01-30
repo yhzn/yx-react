@@ -136,6 +136,7 @@ export class Register extends Component {
             }
 
         }
+
         if (v === "phone") {
             this.setState({errPhone:""});
             if(!e.target.value.trim()){
@@ -148,7 +149,6 @@ export class Register extends Component {
 
             }else{
                 this.setState({phone:e.target.value.trim()})
-
             }
         }
         if(v==="code"){
@@ -308,13 +308,13 @@ export class Register extends Component {
                                     {
                                         this.state.registerMethod?
                                             <li>
-                                                <label><input type="text" placeholder="姓名" onBlur={this.getValue.bind(this,"user")}/></label>
+                                                <label><input type="text" placeholder="姓名" onChange={this.getValue.bind(this,"user")}/></label>
                                                 <p className="err">{this.state.errUser}</p>
                                             </li>
                                             :null
                                     }
                                     <li>
-                                        <label><input type="text" placeholder="手机号" onBlur={this.getValue.bind(this,"phone")}/></label>
+                                        <label><input type="text" placeholder="手机号" onChange={this.getValue.bind(this,"phone")}/></label>
                                         <p className="err">{this.state.errPhone}</p>
 
                                     </li>
@@ -326,11 +326,11 @@ export class Register extends Component {
                                     </li>
 
                                     <li>
-                                        <label><input type="password" placeholder="请输入新密码" onBlur={this.getValue.bind(this,"newPassWord")} onFocus={this.toTop}/></label>
+                                        <label><input type="password" placeholder="请输入新密码" onChange={this.getValue.bind(this,"newPassWord")} onFocus={this.toTop}/></label>
                                         <p className="err">{this.state.errNewPassWord}</p>
                                     </li>
                                     <li>
-                                        <label><input type="password" placeholder="请确认新密码" onBlur={this.getValue.bind(this,"surePassWord")} onFocus={this.toTop}/></label>
+                                        <label><input type="password" placeholder="请确认新密码" onChange={this.getValue.bind(this,"surePassWord")} onFocus={this.toTop}/></label>
                                         <p className="err">{this.state.errSurePassWord}</p>
                                     </li>
 

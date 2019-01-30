@@ -23,11 +23,16 @@ export class Login extends Component {
     }
     componentDidMount () {
         let urlParam=getUrlParam("code");
+        let getUserMsg=getCookie("userMsg");
         if(!!urlParam){
             this.getData(`${baseUrl}account/getUserAccessToken/wxCode`,{code:urlParam});
         }else if(getCookie("token")){
             this.props.history.push( '/home',null);
         }
+        if(getUserMsg){
+            this.setState({phone:JSON.parse(getUserMsg).phone,password:JSON.parse(getUserMsg).password})
+        };
+
     }
     getData = (url,parameter) => {
         this.setState({loading:true});
@@ -56,6 +61,11 @@ export class Login extends Component {
                     this.setState({errCode:"验证码失效，请获取新验证码"});
                     break;
                 case 0:
+                    let userMsg={
+                        phone:this.state.phone,
+                        password:this.state.password
+                    }
+                    setCookie("userMsg",JSON.stringify(userMsg),10);
                     setCookie("token",JSON.stringify(data.msg),10);
                     this.props.history.push( '/home',null);
                     break;
@@ -75,9 +85,7 @@ export class Login extends Component {
         this.setState({
             loginMethod:!this.state.loginMethod,
             codeBtnText:"获取验证码",
-            phone:"",
             code:"",
-            password:"",
             errPhone:"",
             errCode:"",
             errPassword:"",
@@ -113,7 +121,11 @@ export class Login extends Component {
         }
     }
     submit = () =>{
-        // setCookie("token","123",10)
+        let userMsg={
+            phone:this.state.phone,
+            password:this.state.password
+        }
+        setCookie("userMsg",JSON.stringify(userMsg),10);
         // console.log(getCookie("token"))
         // localStorage.setItem(`myCat`, `Tom`);
         // console.log(localStorage.getItem(`mt`));

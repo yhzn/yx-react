@@ -40,3 +40,17 @@
 .el-message-box{
    width:300px;
 }
+
+/* 搜索框样式 */
+.select-time{
+    display: flex;
+    align-items: center;
+}
+.el-date-editor.el-input{
+    width: 120px;
+}
+.el-input__inner{
+    height:32px;
+}
+
+/* 表头样式 */

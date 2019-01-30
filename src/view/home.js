@@ -36,14 +36,21 @@ export class Home extends Component {
         this.getHisData();
 
     }
-    jumpTo=(id,url,auth,index)=>{
+    jumpTo=(id,url,auth,applyAuth,state)=>{
 
         if(!auth){
+            if(state===0){
+                MessageBox.alert("该模块待开发，请期待","提示");
+                return false;
+            }
+            if(state===2){
+                MessageBox.alert("该模块无权限操作且不予授权申请","提示");
+                return false;
+            }
             if(this.state.jumpToFlag){
                 return false;
             }
             this.setState({jumpToFlag:true});
-            let applyAuth=this.state.data[index].applyAuth;
             MessageBox.confirm(applyAuth?"授权申请已提交，请耐心等待":"无操作权限，如需操作请申请授权",'提示',{
                 showCancelButton: false,
                 type: 'warning',
@@ -214,7 +221,7 @@ export class Home extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="home-fix">
                 <Header title="医信平台" value={this.state.value} options={this.state.dataHis.options} del={true} onSelectChange={this.selectChange}/>
                 <div className="home container" ref="scroll">
                     <div>
@@ -228,7 +235,7 @@ export class Home extends Component {
                         <ul className="sys-list cleanfix">
                             {
                                 this.state.data.map((item,index)=>(
-                                    <li key={index} className={item.auth?"":"active"} onClick={this.jumpTo.bind(this,item.id,item.href,item.auth,index)}>
+                                    <li key={index} className={item.auth?"":"active"} onClick={this.jumpTo.bind(this,item.id,item.href,item.auth,item.applyAuth,item.state)}>
                                         <i className={`icon iconfont ${item.icon}`}> </i>
                                         <p>{item.text}</p>
                                         {item.num?<p className="warn">{item.num}</p>:null}

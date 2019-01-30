@@ -170,7 +170,7 @@ export class FileList extends Component {
                 </section>
                 <section className="page">
                     {
-                        totalPage!==1 &&
+                        totalPage >= 2 &&
                             <Pagination
                                 layout="prev, pager, next"
                                 currentPage={currentPage}

@@ -7,13 +7,14 @@ import "whatwg-fetch";
 let baseUrl="http://210.22.124.170:8005/api/";
 let baseRestartUrl="http://210.22.124.170:8089/";
 let basePrUrl="http://guahao.easthospital.cn:8088/api/";
+let baseQrUrl="http://guahao.easthospital.cn:8088/qr/";
 
- if(process.env.NODE_ENV==="development"){
-    baseUrl="/yx/api/";
-    baseRestartUrl="/reset/";
-    basePrUrl="/pr/api/";
+ if(process.env.NODE_ENV==="development"){      
+    // baseUrl="/yx/api/";
+    // baseRestartUrl="/reset/";
+    // basePrUrl="/pr/api/";
  }
-export {baseUrl,baseRestartUrl,basePrUrl}
+export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl}
 
 export let isBasic = (it) => {
     return it===null || ( typeof it !== "object" && typeof it !== "array");
@@ -46,19 +47,37 @@ export let formData = (parameter) => {
     }
     return formData;
 }
-export let getCodeTime = (_this,url,parameter) => {
+export let getCodeTime = (_this,url,parameter,f=true) => {
     if(!_this.state.getCodeFlag){
         return false;
     }
-    if(!_this.state.phone.trim()){
-        _this.setState({errPhone:"手机号不能为空"});
-        return false;
+    if(f){
+        if(!!_this.state.errPhone.trim()){
+            return false;
+        }
+        if(!_this.state.phone.trim()){
+            _this.setState({errPhone:"手机号不能为空!"});
+            return false;
 
-    }
-    if(!!_this.state.errPhone.trim()){
-        return false;
+        }
+        if(!!_this.state.errPhone.trim()){
+            return false;
 
+        }
+    }else{
+        // 会议签到
+        if(!_this.state.phone.trim()){
+            MessageBox.alert("手机号不能为空","提示");
+            return false;
+        }
+        console.log(_this.state.phone)
+        if(!/^1[3,4,5,7,8]\d{9}$/.test(_this.state.phone.trim())){
+            MessageBox.alert("手机号格式不正确","提示");
+            return false;
+
+        }
     }
+
     _this.state.getCodeFlag=false;
     let count=60;
     fetch(url,{
@@ -74,32 +93,33 @@ export let getCodeTime = (_this,url,parameter) => {
         }
     })
     .then((data)=>{
-        switch (data.code){
-            case 201:
-                clearInterval(_this.timer);
-                _this.setState({
-                    codeBtnText:`获取验证码`,
-                    getCodeFlag:true
-                });
-                _this.setState({errPhone:"该手机号未注册"});
-                break;
-            case 303:
-                clearInterval(_this.timer);
-                _this.setState({
-                    codeBtnText:`获取验证码`,
-                    getCodeFlag:true
-                });
-                _this.setState({errPhone:"该手机号已注册"});
-                break;
+        switch (data.code) {
+            // case 201:
+            //     clearInterval(_this.timer);
+            //     _this.setState({
+            //         codeBtnText: `获取验证码`,
+            //         getCodeFlag: true
+            //     });
+            //     _this.setState({errPhone: "该手机号未注册"});
+            //     return false;
+            // case 303:
+            //     clearInterval(_this.timer);
+            //     _this.setState({
+            //         codeBtnText: `获取验证码`,
+            //         getCodeFlag: true
+            //     });
+            //     _this.setState({errPhone: "该手机号已注册"});
+            //     return false;
             case 0:
-                break;
+                return false;
             default :
                 clearInterval(_this.timer);
                 _this.setState({
-                    codeBtnText:`获取验证码`,
-                    getCodeFlag:true
+                    codeBtnText: `获取验证码`,
+                    getCodeFlag: true
                 });
-                MessageBox.alert("验证码获取失败，请重新获取");
+                MessageBox.alert(data.msg,"提示");
+                return false;
         }
     })
     .catch(()=>{
@@ -152,8 +172,23 @@ export let delCookie = function (name) {
          setCookie(name, ' ', -1);
 };
 export let getUrlParam = function (name) {
-    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    let r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]);
-    return null;
+    let after = window.location.hash;
+    let index =after.indexOf('?');
+    if(index === -1) { //如果url中没有传参直接返回空
+        return null
+     }
+     //key存在先通过search取值如果取不到就通过hash来取
+    if(after){
+        let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        let r = after.slice(index+1).match(reg);
+        if(r != null) {
+            return  decodeURIComponent(r[2]);
+        } else {
+            return null;
+        }
+    }
+    // let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    // let r = window.location.search.substr(1).match(reg);
+    // if (r != null) return unescape(r[2]);
+    // return null;
 }

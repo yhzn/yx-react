@@ -12,6 +12,13 @@ import {FileList} from "./view/fileList";
 import {Validate} from "./view/v";
 import {Oper} from "./view/oper";
 import {Print} from "./view/print";
+import {Ghsf} from "./view/ghsf";
+import {GhsfSub} from "./view/ghsf-sub";
+import {ScanSign} from "./scan/sign";
+import {ScanRegister} from "./scan/register";
+import {Information} from "./scan/information";
+import {IpadSign} from "./scan/ipad-sign";
+import {IpadCode} from "./scan/ipad-code";
 // import createHistory from 'history/createHashHistory'
 // const history = createHistory();
 class App extends Component {
@@ -29,6 +36,13 @@ class App extends Component {
                         <Route  path="/v" component={Validate}/>
                         <Route path="/oper/:id" component={Oper}/>
                         <Route path="/print/:id" component={Print}/>
+                        <Route path="/ghsf/:id" component={Ghsf}/>
+                        <Route path="/ghsfsub/:id" component={GhsfSub}/>
+                        <Route path="/ScanSign" component={ScanSign}/>
+                        <Route path="/ScanRegister/:id" component={ScanRegister}/>
+                        <Route path="/Information" component={Information}/>
+                        <Route path="/IpadSign" component={IpadSign}/>
+                        <Route path="/IpadCode" component={IpadCode}/>
                     </Switch>
                 </div>
             </Router>

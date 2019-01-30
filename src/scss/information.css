@@ -1,0 +1,24 @@
+.information {
+    background:#f0f0f0;
+}
+.information section{
+    margin: 10px;
+    padding-bottom: 10px;
+    overflow: hidden;
+    border-radius: 5px;
+    background:#ffffff;
+}
+.information h3,.information li{
+    height:36px;
+    line-height: 36px;
+    font-size: 18px;
+}
+.information h3{
+    color:#ffffff;
+    text-align: center;
+    background: #ffb985;
+}
+.information li{
+    padding-left:10px;
+    border-bottom: 1px solid #e5e5e5;
+}

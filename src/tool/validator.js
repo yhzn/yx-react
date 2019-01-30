@@ -50,19 +50,16 @@ class Validator {
             if (type!=='required' && !input) {
                 // 非 required 输入框 无内容跳过该校验点（非必填项，若填写必须满足校验规则）
                 return false;
-
             }
             if (isFunction(point)) {
                 option.reg = predefine.reg;
                 if (customizeTip) {
-
                     if (!point(depends,option)) {
                         rule.tips = tipsText;
                     }
                     return !point (depends,option);
                 }else{
                     valid = !point(depends,option);
-
                 }
             }else {
                 if (predefine.validate) {
@@ -78,13 +75,12 @@ class Validator {
                         valid = predefine.reg.test(input);
                     }
                 }else{
-                    throw new Error(`${JSON.stringify(rule)} should have a validate function or a regExp`)
+                    throw new Error(`${JSON.stringify(rule)} should have a validate function or a regExp`);
                 }
-
             }
 
             if (!valid) {
-                rule.tips = predefine.tips({name,set:point,input})
+                rule.tips = predefine.tips({name,set:point,input});
             }
             this.ctx.setState({[this.key]:this.rules});
             return !valid;
@@ -131,7 +127,7 @@ class Validator {
             })
         }else if(typeof depends === 'string'){
             let key=depends;
-            res[key]=this.getOneDepend(key)
+            res[key]=this.getOneDepend(key);
         }
         return res;
     }

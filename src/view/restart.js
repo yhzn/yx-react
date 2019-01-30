@@ -10,10 +10,14 @@ export class Restart extends Component {
         this.state={
             data:[],
             countDown:null,
-            loading:false
+            loading:true,
+            reload:true,
+            title:null,
         }
         this.timer=null;
         this.d=true;
+        this.id=this.props.match.params.id.split("-");
+
     }
     componentDidMount () {
         this.scroller=new BScroll(this.refs.scroll,{
@@ -21,11 +25,21 @@ export class Restart extends Component {
             click:true,
             probeType:3,
         });
+        switch (this.id[1]){
+            case "1":
+                this.setState({title:"集成平台重启"});
+                break;
+            case "2":
+                this.setState({title:"服务重启"});
+                break;
+        }
+
+
         this.getData();
     }
     getData = () => {
-        this.setState({loading:true});
-        fetch(`${baseRestartUrl}list?modularId=${this.props.match.params.id}&token=${getCookie("token")}`,{
+        this.setState({loading:true,reload:false});
+        fetch(`${baseRestartUrl}list?modularId=${this.id[0]}&token=${getCookie("token")}&restartSign=${this.id[1]}`,{
             // method:"post",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -62,8 +76,10 @@ export class Restart extends Component {
                              }
                              clearTimeout(this.timer);
                         },100);
-
-
+                        this.getDatatimer=setTimeout(()=>{
+                            clearTimeout(this.getDatatimer);
+                            this.getData();
+                        },50000)
                 }
             })
             .catch((err) => {
@@ -78,49 +94,28 @@ export class Restart extends Component {
 
             })
     }
-    restart = (id) => {
-        this.setState({loading:true});
+    restart = (id,flag,text,index) => {
+        if(flag!==0){
+            return false;
+        }
+        let data=this.state.data;
+        data[index].flag=1;
+        this.setState({data});
         fetch(baseRestartUrl+"restart?id="+id,{
             // method:"post",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         })
-            .then((response)=>{
-                this.setState({loading:false});
-                if (response.status >= 200 && response.status < 300) {
-                    return response;
-                }
-                MessageBox.alert(response.statusText, '提示');
-                const error = new Error(response.statusText);
-                error.response = response;
-                throw error;
-        })
-            .then((response) => {
-                if(response.status===200){
-                    return response.json()
-                }
-            })
-            .then((data) => {
-                if(data.code===0){
-                    MessageBox.alert('系统重启成功', '提示');
-                }else{
-                    MessageBox.alert(data.msg, '提示');
-                }
-            })
-            .catch((err) => {
-                this.setState({loading:false});
-                MessageBox.alert('系统重启失败', '提示');
-            })
     }
     checkedLog = (id) => {
         this.props.history.push( '/fileList/'+id,null);
     }
     render () {
-        let {data,loading} = this.state;
+        let {data,loading,reload,title} = this.state;
         return (
             <section className="restart">
-                <Header title="集成平台重启"/>
+                <Header title={title}/>
                 <section className="container" ref="scroll">
                     <section>
                         {
@@ -129,7 +124,7 @@ export class Restart extends Component {
                                     <li>{item.ip}</li>
                                     <li>{item.text}</li>
                                     <li>
-                                        <Button type="warning" onClick={this.restart.bind(this,item.id)}>系统重启</Button>
+                                        <Button type="warning" loading={item.flag!==0} onClick={this.restart.bind(this,item.id,item.flag,item.text,index)}>{item.flag!==0?"系统重启中，请等待":"系统重启,约需 120s"}</Button>
                                         <Button type="primary" onClick={this.checkedLog.bind(this,item.id)}>重启日志查询</Button>
                                     </li>
                                 </ul>
@@ -138,7 +133,7 @@ export class Restart extends Component {
                     </section>
                 </section>
                 {
-                    loading && <Loading text={"加载中，请等待......"} fullscreen={true}/>
+                    reload && loading && <Loading text={"加载中，请等待......"} fullscreen={true}/>
                 }
             </section>
         )

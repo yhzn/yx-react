@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Header} from "../component/header";
 import {Input, Button, MessageBox,Loading} from "element-react"
-import {baseRestartUrl, getCookie,basePrUrl} from "../tool/tool";
+import {getCookie,basePrUrl} from "../tool/tool";
 import qs from "qs"
 export class Print extends Component {
     constructor (props) {
@@ -92,7 +92,7 @@ export class Print extends Component {
                     if(data.code===0) {
                         this.setState({reset: false});
                     }
-                    MessageBox.alert(`发票号为“${this.fphm+data.msg}`,"提示");
+                    MessageBox.alert(`发票号为“${this.fphm}”${data.msg}`,"提示");
                 })
                 .catch((err) => {
                     this.setState({loading:false});
@@ -109,6 +109,7 @@ export class Print extends Component {
                     <Input
                         placeholder="请输入发票号码"
                         value={value}
+                        onFocus={() => {this.setState({value:""})}}
                         onChange={(value)=>{this.setState({value})}}
                         append={
                             <Button type="primary" icon="search" onClick={this.search}>搜索</Button>
