@@ -27,7 +27,6 @@ export class Ghsf extends Component {
 
         if(!!ghsfData.value){
             this.setState({loading:true});
-
             this.setState({
                 endTime:ghsfData.endTime,
                 value:ghsfData.value,
