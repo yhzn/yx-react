@@ -1,6 +1,9 @@
 .notice-screen{
-    width:100vw;
-    height:100vh;
+    /*width:100vw;*/
+    /*height:100vh;*/
+    width:calc(100vw - 60px);
+    height:calc(100vh - 60px);
+    padding:30px;
     background-image: url(../image/screen-logo.png),linear-gradient(#004ba8,#010d63);
     background-size: 90vh 50vh,100% 100%;
     background-repeat: no-repeat;
@@ -29,11 +32,19 @@
     margin-right: 20px;
     font-size: 28px;
 }
+.notice-screen .notice-select{
+    margin-left: 20px;
+}
+.notice-screen .notice-select .el-input__icon+.el-input__inner{
+    font-weight: bold;
+
+}
 .notice-screen .table-container{
     margin: 0 20px;
     font-size: 32px;
     color:#ffffff;
-    height:calc(100vh - 90px);
+    height:calc(100% - 90px);
+    overflow: hidden;
 }
 .notice-screen .table-container table{
     width:100%;

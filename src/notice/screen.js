@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Select} from 'element-react'
 import "whatwg-fetch"
 export class NoticeScreen extends Component{
     constructor (props) {
@@ -7,7 +8,15 @@ export class NoticeScreen extends Component{
             data:[],
             y:null,
             h:null,
-            w:null
+            w:null,
+            options: [{
+                value: '1',
+                label: '仅显示首台'
+            }, {
+                value: '2',
+                label: '显示所有'
+            }],
+            value: '2'
         }
         this.listNum=0;   // 每页展示条数
         this.page=0;      // 展示页面
@@ -18,9 +27,14 @@ export class NoticeScreen extends Component{
         this.dataTemp=[];
         this.refreshTime=10; // 翻页刷新时间
         this.getServerCount=100;
+        this.parameter="2";
     }
     componentDidMount () {
         let _this=this;
+        let screenSelect=localStorage.getItem("screenSelect");
+        if(!!screenSelect){
+            this.setState({value:screenSelect})
+        }
         this.setDate();
         this.animation();
         window.onresize=function(){
@@ -89,7 +103,7 @@ export class NoticeScreen extends Component{
     getData = () => {
         if(this.getServerCount++>this.totalPage){
             this.getServerCount=0;
-            fetch("http://192.168.3.133:8087/api/OperatingPreview/operateScreen",{
+            fetch(`http://192.168.3.133:8087/api/OperatingPreview/operateScreen?num=${this.state.value}`,{
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
@@ -110,11 +124,23 @@ export class NoticeScreen extends Component{
                 });
         }
     }
+    setParameter = (v) => {
+        localStorage.setItem("screenSelect",v);
+        window.location.reload();
+
+    }
     render () {
-        let {data,y,w,h} = this.state;
+        let {data,y,w,h,options,value} = this.state;
         return (
             <section className="notice-screen">
                 <header>
+                    <Select value={value} className="notice-select" placeholder="请选择" onChange={this.setParameter.bind(this)}>
+                        {
+                            options.map(el => {
+                                return <Select.Option key={el.value} label={el.label} value={el.value} />
+                            })
+                        }
+                    </Select>
                     <p>手术预告&lt;本部&gt;</p>
                     <p>{y}  <span>{w}</span> {h}</p>
                 </header>
@@ -126,7 +152,7 @@ export class NoticeScreen extends Component{
                              <th>科室</th>
                              <th>床号</th>
                              <th>姓名</th>
-                             <th>住院号</th>
+                             {/*<th>住院号</th>*/}
                              <th>手术名称</th>
                              <th>手术医生</th>
                              <th>助手</th>
@@ -140,7 +166,7 @@ export class NoticeScreen extends Component{
                                     <td>{item.ksmc}</td>
                                     <td>{item.brch}</td>
                                     <td>{item.brxm}</td>
-                                    <td>{item.zyhm}</td>
+                                    {/*<td>{item.zyhm}</td>*/}
                                     <td>{item.ssmc}</td>
                                     <td>{item.ssys}</td>
                                     <td>{item.ssyz}</td>
