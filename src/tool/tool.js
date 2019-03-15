@@ -8,13 +8,14 @@ let baseUrl="http://210.22.124.170:8005/api/";
 let baseRestartUrl="http://210.22.124.170:8089/";
 let basePrUrl="http://guahao.easthospital.cn:8088/api/";
 let baseQrUrl="http://guahao.easthospital.cn:8088/qr/";
+let baseOUrl="http://guahao.easthospital.cn:8088/";
 
  if(process.env.NODE_ENV==="development"){      
     // baseUrl="/yx/api/";
     // baseRestartUrl="/reset/";
     // basePrUrl="/pr/api/";
  }
-export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl}
+export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl,baseOUrl}
 
 export let isBasic = (it) => {
     return it===null || ( typeof it !== "object" && typeof it !== "array");

@@ -42,6 +42,9 @@ export class NoticeScreen extends Component{
             _this.initHeight=true;
         }
     }
+    componentWillUnmount () {
+        clearTimeout(this.timer);
+    }
     animation = () =>{
         clearTimeout(this.timer);
         this.timer=setTimeout(()=>{
