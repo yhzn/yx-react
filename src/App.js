@@ -21,6 +21,7 @@ import {IpadSign} from "./scan/ipad-sign";
 import {IpadCode} from "./scan/ipad-code";
 import {NoticeScreen} from "./notice/screen";
 import {NoticeQuery} from "./notice/query";
+import {HisInfo} from "./scan/history-information";
 // import createHistory from 'history/createHashHistory'
 // const history = createHistory();
 class App extends Component {
@@ -47,6 +48,7 @@ class App extends Component {
                         <Route path="/IpadCode" component={IpadCode}/>
                         <Route path="/NoticeScreen" component={NoticeScreen}/>
                         <Route path="/NoticeQuery" component={NoticeQuery}/>
+                        <Route path="/HisInfo" component={HisInfo}/>
                     </Switch>
                 </div>
             </Router>

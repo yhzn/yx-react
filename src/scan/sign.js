@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import {validate} from "../tool/validator";
 import {Button,Loading,MessageBox} from "element-react";
-import {baseQrUrl,setCookie,getUrlParam,getCookie} from "../tool/tool";
+import {baseQrUrl,baseKQrl,setCookie,getUrlParam,getCookie} from "../tool/tool";
+import {scanInfoData} from "../data/data";
 import qs from "qs";
 export class ScanSign extends Component {
     constructor (props) {
@@ -27,6 +28,7 @@ export class ScanSign extends Component {
         }
     }
     componentDidMount () {
+        scanInfoData.flag=false;
         let getUser=JSON.parse(getCookie("scanUser"));
         if(getUser){
             this.setState({
@@ -62,7 +64,7 @@ export class ScanSign extends Component {
                             MessageBox.alert("登录成功，请返回微信，扫码签到");
                             return false;
                         }
-                        window.location.href=`http://yiliao.chinaforwards.com:8006/#/information?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
+                        window.location.href=`${baseKQrl}/#/information?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
                         break;
                     default :
                         MessageBox.alert(data.msg,"提示");
@@ -74,7 +76,6 @@ export class ScanSign extends Component {
                 this.setState({loading:false});
                 MessageBox.alert("登录异常");
             })
-
     }
     submit = () => {
         if(validate({ctx:this,key:'ver',rules:this.state.ver})){

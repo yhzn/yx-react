@@ -116,7 +116,7 @@ export class ScanRegister extends Component {
             })
             .catch((err) => {
                 this.setState({loading:false});
-                MessageBox.alert("注册失败，请重新注册")
+                MessageBox.alert("注册失败，请重新注册");
             })
     }
     getCode = () => {

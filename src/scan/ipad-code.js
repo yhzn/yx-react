@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {MessageBox, Select} from "element-react";
-import {getCookie,baseQrUrl} from "../tool/tool";
+import {getCookie,baseQrUrl,baseKQrl} from "../tool/tool";
 import QRCode from 'qrcodejs2'
 export class IpadCode extends Component {
     constructor (props) {
@@ -18,8 +18,8 @@ export class IpadCode extends Component {
             this.refs.canvas,
             {
                 text: '',
-                width: 380,
-                height: 380,
+                width: 280,
+                height: 280,
             }
         )
         let hasCookie = getCookie("scanToken");
@@ -72,7 +72,7 @@ export class IpadCode extends Component {
                     this.setState({parameter:true})
                     if(this.state.timerCount===5){
                         this.qrCode.clear(); // 清除代码
-                        this.qrCode.makeCode(`http://yiliao.chinaforwards.com:8006/#/information?qrcode=${data.msg}&nId=${this.nId}`);
+                        this.qrCode.makeCode(`${baseKQrl}/#/information?qrcode=${data.msg}&nId=${this.nId}`);
                     }
                     this.timer=setTimeout(()=>{
                         this.state.timerCount--;
@@ -103,7 +103,7 @@ export class IpadCode extends Component {
                         {options.map((el,index)=> {
                                 return <Select.Option
                                     key={index}
-                                    label={el.sMeetingname}
+                                    label={`${el.sMeetingname}(${el.sMeetingaddress})`}
                                     value={el.nId}
                                 />
                             })
@@ -113,12 +113,12 @@ export class IpadCode extends Component {
                 <section className="main">
                     <h3>会议考勤扫码系统</h3>
                     <section className="code" ref="canvas" />
-                    { parameter && <p>二维码 {timerCount} 秒后刷新</p>}
-
-                </section>
-                <section className="table">
-                    <table>
-                        <tbody>
+                    <p>
+                        { parameter && `二维码 ${timerCount} 秒后刷新`}
+                    </p>
+                    <section className="table">
+                        <table>
+                            <tbody>
                             <tr>
                                 <td>会议名称：</td>
                                 <td>{list.sMeetingname}</td>
@@ -131,9 +131,11 @@ export class IpadCode extends Component {
                                 <td>结束时间：</td>
                                 <td>{list.tEndtime}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </section>
                 </section>
+
                 <footer>
                     上海延华智能科技（集团）股份有限公司
                 </footer>

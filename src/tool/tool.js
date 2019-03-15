@@ -9,13 +9,14 @@ let baseRestartUrl="http://210.22.124.170:8089/";
 let basePrUrl="http://guahao.easthospital.cn:8088/api/";
 let baseQrUrl="http://guahao.easthospital.cn:8088/qr/";
 let baseOUrl="http://guahao.easthospital.cn:8088/";
+let baseKQrl="http://yiliao.chinaforwards.com:8006";
 
  if(process.env.NODE_ENV==="development"){      
     // baseUrl="/yx/api/";
     // baseRestartUrl="/reset/";
     // basePrUrl="/pr/api/";
  }
-export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl,baseOUrl}
+export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl,baseOUrl,baseKQrl}
 
 export let isBasic = (it) => {
     return it===null || ( typeof it !== "object" && typeof it !== "array");
@@ -192,4 +193,10 @@ export let getUrlParam = function (name) {
     // let r = window.location.search.substr(1).match(reg);
     // if (r != null) return unescape(r[2]);
     // return null;
+}
+export let getHomeUrlParam = function (name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
 }

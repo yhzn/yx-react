@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import {Header} from "../component/header";
-import {baseQrUrl, getUrlParam,getCookie} from "../tool/tool";
+import {Link} from 'react-router-dom';
+import {baseQrUrl, baseKQrl, getUrlParam, getCookie, delCookie} from "../tool/tool";
 import {MessageBox,loading} from "element-react";
 import qs from "qs";
+import {scanInfoData} from "../data/data";
 
 export class Information extends Component {
     constructor (props) {
@@ -13,7 +15,9 @@ export class Information extends Component {
         }
     }
     componentDidMount () {
-        if(getCookie("scanToken")){
+        if(scanInfoData.flag){
+            this.setState({data:scanInfoData.data})
+        }else if(getCookie("scanToken")){
             this.setState({loading:true})
             fetch(`${baseQrUrl}vail/sign`,{
                 method:"post",
@@ -35,19 +39,33 @@ export class Information extends Component {
                 })
                 .then((data)=>{
                     if(data.code===0){
-                        console.log(data.msg)
+                        scanInfoData.data=data.msg;
                         this.setState({data:data.msg})
-
                     }else{
-                        MessageBox.alert(data.msg,"提示")
+                        MessageBox.msgbox({
+                            title: "提示",
+                            message: data.msg,
+                            showCancelButton: false
+                        }).then(action => {
+                            delCookie("scanToken");
+                            window.location.href=`${baseKQrl}/#/scansign?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
+
+                        })
                     }
                 })
                 .catch(()=>{
                     this.setState({loading:false})
-                    MessageBox.alert("数据加载异常","提示")
+                    MessageBox.msgbox({
+                        title: "提示",
+                        message: "数据加载异常",
+                        showCancelButton: false
+                    }).then(action => {
+                        delCookie("scanToken");
+                        window.location.href=`${baseKQrl}/#/scansign?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
+                    })
                 })
         }else{
-            window.location.href=`http://yiliao.chinaforwards.com:8006/#/scansign?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
+            window.location.href=`${baseKQrl}/#/scansign?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
         }
     }
     render () {
@@ -63,9 +81,22 @@ export class Information extends Component {
                             <li>会议地点：{data.sMeetingaddress}</li>
                             <li>开始时间：{data.tStarttime}</li>
                             <li>结束时间：{data.tEndtime}</li>
-                            <li>签到状态：{data.sStyle}</li>
+                            <li>签到状态：
+                                {
+                                    data.sStyle==="qd"?
+                                        "签到"
+                                        :
+                                        data.sStyle==="qt"?
+                                        "签退"
+                                        :
+                                        "未签到"
+                                }
+                            </li>
+                            <li>签到时间：{data.qdTime}</li>
+                            <li>签退时间：{data.qtTime}</li>
                         </ul>
                     </section>
+                    <p><Link to="/HisInfo">查看会议考勤历史记录</Link></p>
                 </section>
             </section>
         )
