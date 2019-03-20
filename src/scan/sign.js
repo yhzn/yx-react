@@ -64,7 +64,7 @@ export class ScanSign extends Component {
                             MessageBox.alert("登录成功，请返回微信，扫码签到");
                             return false;
                         }
-                        window.location.href=`${baseKQrl}/#/information?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}`
+                        window.location.href=`${baseKQrl}/#/information?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}&openId=${getUrlParam("openId")}`
                         break;
                     default :
                         MessageBox.alert(data.msg,"提示");

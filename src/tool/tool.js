@@ -14,7 +14,7 @@ let baseKQrl="http://yiliao.chinaforwards.com:8006";
  if(process.env.NODE_ENV==="development"){      
     // baseUrl="/yx/api/";
     // baseRestartUrl="/reset/";
-    // basePrUrl="/pr/api/";
+     baseKQrl="http://192.168.17.159:3000";
  }
 export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl,baseOUrl,baseKQrl}
 
