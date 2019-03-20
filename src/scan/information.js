@@ -106,7 +106,7 @@ export class Information extends Component {
                             <li>签退时间：{data.qtTime}</li>
                         </ul>
                     </section>
-                    <p><Link to="/HisInfo">查看会议考勤历史记录</Link></p>
+                    <p><Link to={`/HisInfo/${getUrlParam("openId")}`}>查看会议考勤历史记录</Link></p>
                 </section>
             </section>
         )

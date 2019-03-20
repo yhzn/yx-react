@@ -48,7 +48,7 @@ class App extends Component {
                         <Route path="/IpadCode" component={IpadCode}/>
                         <Route path="/NoticeScreen" component={NoticeScreen}/>
                         <Route path="/NoticeQuery" component={NoticeQuery}/>
-                        <Route path="/HisInfo" component={HisInfo}/>
+                        <Route path="/HisInfo/:id" component={HisInfo}/>
                     </Switch>
                 </div>
             </Router>

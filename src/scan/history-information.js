@@ -4,7 +4,7 @@ import {Header} from "../component/header";
 import {DataRange} from "../component/data-range";
 import BScroll from 'better-scroll';
 import moment from 'moment'
-import {baseQrUrl, getCookie} from "../tool/tool";
+import {baseQrUrl, getCookie,getUrlParam} from "../tool/tool";
 import {scanInfoData} from "../data/data";
 import qs from "qs";
 export class HisInfo extends Component {
@@ -15,9 +15,11 @@ export class HisInfo extends Component {
             userName:"",
             userId:"",
             loading:true,
+            endTime:new Date(),
+            startTime:new Date(new Date().getTime()-7*24*3600*1000)
         }
-        this.endTime=new Date();
-        this.startTime=new Date(this.endTime.getTime()-7*24*3600*1000);
+
+        this.openId=this.props.match.params.id;
 
     }
     componentDidMount () {
@@ -27,27 +29,51 @@ export class HisInfo extends Component {
             click:true,
             probeType:3,
         })
-        this.getData(moment(this.startTime).format('YYYY-MM-DD'),moment(this.endTime).format('YYYY-MM-DD'))
+        if(this.openId){
+            this.getData(`${baseQrUrl}vail/signListByOpenId`,{
+              startDate:moment(this.state.startTime).format('YYYY-MM-DD'),
+              endDate:moment(this.state.endTime).format('YYYY-MM-DD'),
+              openId:this.openId
+
+            })
+        }else{
+            this.getData(`${baseQrUrl}vail/signList`,{
+              startDate:moment(this.state.startTime).format('YYYY-MM-DD'),
+              endDate:moment(this.state.endTime).format('YYYY-MM-DD')
+            },getCookie("scanToken"))
+        }
     }
     getDateRange = (startTime,endTime) => {
-        this.getData(moment(startTime).format('YYYY-MM-DD'),moment(endTime).format('YYYY-MM-DD'))
+        if(this.openId){
+            this.getData(`${baseQrUrl}vail/signListByOpenId`,{
+              startDate:moment(startTime).format('YYYY-MM-DD'),
+              endDate:moment(endTime).format('YYYY-MM-DD'),
+              openId:this.openId
+
+            })
+        }else{
+            this.getData(`${baseQrUrl}vail/signList`,{
+              startDate:moment(startTime).format('YYYY-MM-DD'),
+              endDate:moment(endTime).format('YYYY-MM-DD')
+            },getCookie("scanToken"))
+        }
+        this.setState({
+            endTime,
+            startTime
+        })
     }
-    getData = (startDate,endDate) => {
-        fetch(`${baseQrUrl}vail/signList`,{
+    getData = (url,parameter,t="") => {
+        fetch(url,{
             method:"post",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-                Token:getCookie("scanToken")
+                Token:t
             },
-            body: qs.stringify({
-                startDate,
-                endDate
-            })
+            body: qs.stringify(parameter)
         })
             .then((response) => {
                 this.setState({loading:false});
                 if(response.status===200){
-
                     return response.json()
                 }
             })
@@ -80,7 +106,7 @@ export class HisInfo extends Component {
             })
     }
     render () {
-        let {data,userName,userId,loading}=this.state;
+        let {data,userName,userId,loading,startTime,endTime}=this.state;
         return (
             <section>
                 <Header title="会议考勤信息查询" />
@@ -88,8 +114,8 @@ export class HisInfo extends Component {
                     <section>
                         <DataRange
                             onGetDateRange={this.getDateRange}
-                            startTime={this.startTime}
-                            ndTime={this.endTime}
+                            startTime={startTime}
+                            endTime={endTime}
                         />
                         {
                             data.length===0?
