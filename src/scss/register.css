@@ -13,6 +13,9 @@
     width:260px;
     margin: 0 auto;
 }
+.register .input-mark button{
+    width:auto;
+}
 .register header{
     display: flex;
     align-items: center;

@@ -7,13 +7,14 @@ import {Home} from './view/home';
 import {Login} from "./view/login";
 import {Auth} from "./view/auth";
 import {Register} from "./view/register";
-import {Restart} from "./view/restart"
+import {Restart} from "./view/restart";
 import {FileList} from "./view/fileList";
 import {Validate} from "./view/v";
 import {Oper} from "./view/oper";
 import {Print} from "./view/print";
 import {Ghsf} from "./view/ghsf";
 import {GhsfSub} from "./view/ghsf-sub";
+import {MoneyInfo} from "./view/money-info";
 import {ScanSign} from "./scan/sign";
 import {ScanRegister} from "./scan/register";
 import {Information} from "./scan/information";
@@ -22,6 +23,9 @@ import {IpadCode} from "./scan/ipad-code";
 import {NoticeScreen} from "./notice/screen";
 import {NoticeQuery} from "./notice/query";
 import {HisInfo} from "./scan/history-information";
+import {ServiceHome} from "./service/home";
+import {ServiceInfo} from "./service/information";
+import {InfoHistory} from "./scan/info-history";
 // import createHistory from 'history/createHashHistory'
 // const history = createHistory();
 class App extends Component {
@@ -30,13 +34,13 @@ class App extends Component {
             <Router>
                 <div className="flex-container">
                     <Switch>
-                        <Route  exact path="/" component={Login}/>
-                        <Route  path="/register/:id" component={Register}/>
-                        <Route  path="/home" component={Home}/>
-                        <Route  path="/auth/:id" component={Auth}/>
-                        <Route  path="/restart/:id" component={Restart}/>
-                        <Route  path="/filelist/:id" component={FileList}/>
-                        <Route  path="/v" component={Validate}/>
+                        <Route exact path="/" component={Login}/>
+                        <Route path="/register/:id" component={Register}/>
+                        <Route path="/home" component={Home}/>
+                        <Route path="/auth/:id" component={Auth}/>
+                        <Route path="/restart/:id" component={Restart}/>
+                        <Route path="/filelist/:id" component={FileList}/>
+                        <Route path="/v" component={Validate}/>
                         <Route path="/oper/:id" component={Oper}/>
                         <Route path="/print/:id" component={Print}/>
                         <Route path="/ghsf/:id" component={Ghsf}/>
@@ -49,6 +53,10 @@ class App extends Component {
                         <Route path="/NoticeScreen" component={NoticeScreen}/>
                         <Route path="/NoticeQuery" component={NoticeQuery}/>
                         <Route path="/HisInfo/:id" component={HisInfo}/>
+                        <Route path="/ServiceHome" component={ServiceHome}/>
+                        <Route path="/ServiceInfo" component={ServiceInfo}/>
+                        <Route path="/MoneyInfo" component={MoneyInfo}/>
+                        <Route path="/InfoHistory" component={InfoHistory}/>
                     </Switch>
                 </div>
             </Router>

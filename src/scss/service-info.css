@@ -1,0 +1,59 @@
+.service-info{
+    background:#f5f5f5;
+}
+.service-info ul{
+    margin: 0 10px;
+    padding-top:10px;
+    background:#ffffff;
+    box-shadow: 0 0 3px #e5e5e5;
+}
+.service-info li{
+    position: relative;
+    padding:10px 10px;
+    font-size: 16px;
+    border-bottom:1px solid #e5e5e5;
+}
+.service-info li p{
+    position: absolute;
+    bottom:-8px;
+    font-size: 13px;
+    color:#ff0000;
+}
+.service-info li label{
+    display: flex;
+    align-items: center;
+}
+.service-info li label input{
+    flex-grow: 1;
+    border: none;
+}
+.service-info li label textarea{
+    flex-grow: 1;
+    height:80px;
+    border: none;
+
+}
+.service-info li:first-child{
+    font-size:16px;
+    border-radius: 5px 5px 0 0;
+    color:#ffffff;
+    text-align: center;
+    background:#ffb985;
+}
+.service-info li:last-child{
+    padding:0;
+    overflow: hidden;
+    border-bottom: none;
+}
+.service-info li:last-child button{
+    margin:0;
+    width:50%;
+    border-radius: 0;
+}
+.service-info li section:first-child{
+    float: left;
+}
+.service-info li section:nth-child(2){
+    margin-left: 50px;
+
+}

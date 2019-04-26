@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {SelectHospital} from '../component/select';
 import {Button,Loading,MessageBox} from "element-react";
-import {getCodeTime,baseUrl} from "../tool/tool";
+import {getCodeTime,baseUrl,getUrlParam} from "../tool/tool";
+import {validate} from "../tool/validator";
+import {InputMark} from "../component/input-mark";
 import qs from 'qs';
 import "whatwg-fetch";
 export class Register extends Component {
@@ -23,36 +25,175 @@ export class Register extends Component {
             errPhone:"",
             errCode:"",
             errNewPassWord:"",
-            errSurePassWord:"",
             errHospital:"",
             loading:false,
             options: [],
+            card:"",
+            cardId:"",
+            mobile:!!getUrlParam("mobile"),
+            v:{
+                hospital:{
+                    input:'name',
+                    name:'院区',
+                },
+                cardId:{
+                    required:true,
+                    cardId:true,
+                    input:'cardId',
+                    name:'身份证号',
+                },
+                card:{
+                    required:true,
+                    input:'card',
+                    name:'卡号',
+                },
+                user:{
+                    required:true,
+                    input:'user',
+                    name:'用户名'
+                },
+                phone:{
+                    required:true,
+                    mobile:true,    // 是否校验数据格式
+                    input:'phone',
+                    name:'手机号码'
+                },
+                code:{
+                    required:true,
+                    input:'code',
+                    name:'验证码'
+                },
+                newPassWord:{
+                    required:true,
+                    password:true,
+                    input:'newPassWord',
+                    name:'密码'
+
+                },
+                surePassWord:{
+                    required: ()=> {
+                        return !(this.state.newPassWord!=="" && this.state.surePassWord!=="");
+                    },
+                    tipsText: ()=> {
+                        return "两次密码输入不一致，请确认新密码！"
+                    },
+                    customizeTip: ()=> {
+                        return (this.state.newPassWord!==this.state.surePassWord && this.state.surePassWord!=="");
+                    },
+                    input:'surePassWord',
+                    name:'确认密码'
+                }
+
+            }
 
         };
         this.scrollFlag=true;
+        this.mobile=getUrlParam("mobile");
     }
     componentDidMount () {
         if(this.props.match.params.id==="1"){
-            fetch(baseUrl+"hospital/getList")
-                .then((response) => {
-                    this.setState({loading:false});
-                    if(response.status===200){
-                        if(response.headers.get('content-type').indexOf("text/html")===0){
-                            return [];
-                        }else{
-                            return response.json();
+            if(!this.state.mobile){
+                this.setState({
+                    v:{
+                        hospital:{
+                            required:true,
+                            input:'name',
+                            name:'院区',
+                        },
+                        user:{
+                            required:true,
+                            input:'user',
+                            name:'用户名'
+                        },
+                        phone:{
+                            required:true,
+                            mobile:true,    // 是否校验数据格式
+                            input:'phone',
+                            name:'手机号码'
+                        },
+                        code:{
+                            required:true,
+                            input:'code',
+                            name:'验证码'
+                        },
+                        newPassWord:{
+                            required:true,
+                            password:true,
+                            input:'newPassWord',
+                            name:'密码'
+
+                        },
+                        surePassWord:{
+                            required: ()=> {
+                                return !(this.state.newPassWord!=="" && this.state.surePassWord!=="");
+                            },
+                            tipsText: ()=> {
+                                return "两次密码输入不一致，请确认新密码！"
+                            },
+                            customizeTip: ()=> {
+                                return (this.state.newPassWord!==this.state.surePassWord && this.state.surePassWord!=="");
+                            },
+                            input:'surePassWord',
+                            name:'确认密码'
                         }
+
                     }
                 })
-                .then((data) => {
-                    this.setState({options:data});
-                })
+                fetch(baseUrl+"hospital/getList")
+                    .then((response) => {
+                        this.setState({loading:false});
+                        if(response.status===200){
+                            if(response.headers.get('content-type').indexOf("text/html")===0){
+                                return [];
+                            }else{
+                                return response.json();
+                            }
+                        }
+                    })
+                    .then((data) => {
+                        this.setState({options:data});
+                    })
+            }
             this.setState({
                 registerMethod:true,
             })
         }else{
             this.setState({
                 registerMethod:false,
+                v:{
+                    phone:{
+                        required:true,
+                        mobile:true,    // 是否校验数据格式
+                        input:'phone',
+                        name:'手机号码'
+                    },
+                    code:{
+                        required:true,
+                        input:'code',
+                        name:'验证码'
+                    },
+                    newPassWord:{
+                        required:true,
+                        password:true,
+                        input:'newPassWord',
+                        name:'密码'
+
+                    },
+                    surePassWord:{
+                        required: () => {
+                            return !(this.state.newPassWord!=="" && this.state.surePassWord!=="");
+                        },
+                        tipsText: () => { // 自定义提示
+                            return "两次密码输入不一致，请确认新密码！"
+                        },
+                        customizeTip: ()=> { // 是否需要自定义提示
+                            return (this.state.newPassWord!==this.state.surePassWord && this.state.surePassWord!=="");
+                        },
+                        input:'surePassWord',
+                        name:'确认密码'
+                    }
+
+                }
             })
         }
     }
@@ -69,24 +210,17 @@ export class Register extends Component {
         .then((response) => {
             this.setState({loading:false});
             if(response.status===200){
-
                 return response.json()
             }
         })
         .then((data) => {
             switch (data.code){
-                case 303:
-                    this.setState({errPhone:"用户以注册"});
-                    break;
-                case 301:
-                    this.setState({errCode:"验证码错误，请获取新验证码"});
-                    break;
                 case 0:
                     this.setState({registerSuccess:true});
                     // this.goBack();
                     break;
                 default :
-                    MessageBox.alert("注册失败，请重新注册");
+                    MessageBox.alert(data.msg,"提示");
                     break;
             }
         })
@@ -97,149 +231,63 @@ export class Register extends Component {
     }
     selectChange = (value) =>{
         this.setState({hospital:value});
-        this.setState({errHospital:""});
     }
     getCode = () => {
         let url=baseUrl+"verifyCode/sendCode_register";
-        if(!this.state.registerMethod){
+        if(this.state.registerMethod && this.state.mobile){
+            url=baseUrl+"verifyCode/sendCode_patientRegister";
+        }
+        if(!this.state.registerMethod && !this.state.mobile){
             url=baseUrl+"verifyCode/sendCode_changepassword";
+        }
+        if(!this.state.registerMethod && this.state.mobile){
+            url=baseUrl+"verifyCode/sendCode_patient_change_password"
         }
         let parameter={
             phoneNum:this.state.phone
         }
         getCodeTime(this,url,parameter);
     }
-    getValue = (v,e) => {
-        if(!this.scrollFlag){
-            this.setTimeO=setTimeout(()=>{
-                this.scrollFlag=true;
-                this.refs.register.style.marginTop="0px";
-                this.scrollTop((this.refs.register.offsetHeight/2)-50,0,1)
-                clearTimeout(this.setTimeO);
-            },100)
-        }
-
-        if(this.state.registerMethod) {
-            if (v === "user") {
-                this.setState({errUser:""});
-                if(!e.target.value.trim()){
-                    this.setState({errUser:"用户名不能为空"});
-                    return false;
-                }
-                if(!/^[\u4E00-\u9FA5a-zA-Z0-9_]/.test(e.target.value.trim())){
-                  this.setState({errUser:"用户名为中文、字母、数字、下划线"})
-                  this.setState({user:""})
-
-                }else{
-                    this.setState({user:e.target.value.trim()})
-                }
-            }
-
-        }
-
-        if (v === "phone") {
-            this.setState({errPhone:""});
-            if(!e.target.value.trim()){
-                this.setState({errPhone:"手机号不能为空"});
-                return false;
-            }
-            if(!/^1[34578]\d{9}$/.test(e.target.value.trim())){
-                this.setState({errPhone:"手机号格式不正确"})
-                this.setState({phone:""})
-
-            }else{
-                this.setState({phone:e.target.value.trim()})
-            }
-        }
-        if(v==="code"){
-            this.setState({errCode:""});
-            if(!e.target.value.trim()){
-                this.setState({errCode:"验证码不能为空"});
-                return false;
-            }
-            this.setState({code:e.target.value.trim()})
-        }
-        if(v==="newPassWord"){
-            this.setState({errNewPassWord:""});
-            if(!e.target.value.trim()){
-                this.setState({errNewPassWord:"密码不能为空"});
-                return false;
-            }
-            if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
-                this.setState({errNewPassWord:"密码为6-18位的字母、数字、下划线"});
-                this.setState({newPassWord:""});
-            }else{
-                this.setState({newPassWord:e.target.value.trim()});
-
-            }
-        }
-        if(v==="surePassWord"){
-            this.setState({errSurePassWord:""});
-            if(!e.target.value.trim()){
-                this.setState({errSurePassWord:"请确认新密码"});
-                return false;
-            }
-            if(this.state.newPassWord.trim()!==e.target.value.trim()){
-                this.setState({errSurePassWord:"两次密码不一致"});
-                this.setState({surePassWord:""});
-            }else{
-                this.setState({surePassWord:e.target.value.trim()});
-            }
-        }
-    }
     submit = () => {
-        this.setState({errPhone:""});
-        this.setState({errCode:""});
-        let flag=true;
+        if(!validate({ctx:this,key:'v',rules:this.state.v})){
+            return false;
+        }
         let url=baseUrl+"account/register";
         let parameter={}
-        this.setState({errUser:""});
-        this.setState({errCode:""});
-        this.setState({errNewPassWord:""});
-        this.setState({errSurePassWord:""});
-        if(!this.state.phone.trim()){
-            this.setState({errPhone:"手机号不能为空"});
-            flag=false;
-        }
-        if(!this.state.code.trim()){
-            this.setState({errCode:"验证码不能为空"});
-            flag=false;
-        }
-        if(!this.state.newPassWord.trim()){
-            this.setState({errNewPassWord:"密码不能为空"});
-            flag=false;
-        }
-        if(!this.state.surePassWord.trim()){
-            this.setState({errSurePassWord:"请确认新密码"});
-            flag=false;
-        }
-
         if(this.state.registerMethod) {
-            if(!this.state.hospital){
-                this.setState({errHospital:"请选择院区"});
-                flag=false;
+            if(!this.state.mobile){
+                parameter={
+                    id:this.state.hospital,
+                    user:this.state.user,
+                    phoneNum:this.state.phone,
+                    code:this.state.code,
+                    password:this.state.newPassWord
+                }
+
+            }else{
+                url=baseUrl+"system/patientRegister/register";
+                parameter={
+                    patientName:this.state.user,
+                    patientIdCard:this.state.cardId,
+                    patientPhone:this.state.phone,
+                    password:this.state.newPassWord,
+                    code:this.state.code,
+                    card:this.state.card
+                }
             }
-            if(!this.state.user.trim()){
-                this.setState({errUser:"用户名不能为空"});
-                flag=false;
-            }
-            parameter={
-                id:this.state.hospital,
-                user:this.state.user,
-                phoneNum:this.state.phone,
-                code:this.state.code,
-                password:this.state.newPassWord
-            }
+
         }else{
-            url=baseUrl+"account/changepassword";
+            if(!this.state.mobile){
+                url=baseUrl+"account/changepassword";
+            }else{
+                url=baseUrl+"system/patientRegister/updatePassword"
+            }
             parameter={
                 phoneNum:this.state.phone,
                 code:this.state.code,
                 password:this.state.newPassWord
             }
-        }
-        if(!flag){
-            return false;
+
         }
         this.getData(url,parameter);
     }
@@ -277,11 +325,18 @@ export class Register extends Component {
         }
 
     }
+    setInput = (value,placeholder,text) =>{
+        this.setState({getInputData:true,placeholder,key:value,value:this.state[value],textarea:text})
+    }
+    getInput = (key,value,b) => {
+        this.setState({[key]:value,getInputData:b,textarea:false})
+    }
     render () {
+        let {registerSuccess,registerMethod,options,hospital,user,getInputData,getCodeFlag,codeBtnText,code,newPassWord,surePassWord,phone,placeholder,value,key,textarea,v,errCode,errPhone,loading,mobile,card,cardId} = this.state;
         return (
                 <section className="register" ref="register">
                     {
-                        this.state.registerSuccess?
+                        registerSuccess?
                             <section>
                                 <section className="success">
                                     <p>
@@ -293,53 +348,73 @@ export class Register extends Component {
                             :
                             <section>
                                 <header>
-                                    <i className="el-icon-arrow-left" onClick={this.goBack}></i>
-                                    <h3>{this.state.registerMethod?"新用户注册":"找回密码"}</h3>
+                                    <i className="el-icon-arrow-left" onClick={this.goBack} />
+                                    <h3>{registerMethod?"新用户注册":"找回密码"}</h3>
                                 </header>
                                 <ul>
                                     {
-                                        this.state.registerMethod?
-                                            <li className="select">
-                                                <SelectHospital onSelectChange={this.selectChange} value="" options={this.state.options}/>
-                                                <p className="err">{this.state.errHospital}</p>
-                                            </li>
-                                            :null
+                                        registerMethod && mobile &&
+                                        <li  onClick={this.setInput.bind(this,"card","请输入卡号")}>
+                                            <label><input type="text" name="card" placeholder="卡号" value={card} readOnly/></label>
+                                            <p className="err">{v.card.tips}</p>
+                                        </li>
                                     }
                                     {
-                                        this.state.registerMethod?
-                                            <li>
-                                                <label><input type="text" placeholder="姓名" onChange={this.getValue.bind(this,"user")}/></label>
-                                                <p className="err">{this.state.errUser}</p>
-                                            </li>
-                                            :null
+                                        registerMethod && mobile &&
+                                        <li  onClick={this.setInput.bind(this,"cardId","请输入身份证号")}>
+                                            <label><input type="text" name="cardId" placeholder="身份证号" value={cardId} readOnly/></label>
+                                            <p className="err">{v.cardId.tips}</p>
+                                        </li>
                                     }
-                                    <li>
-                                        <label><input type="text" placeholder="手机号" onChange={this.getValue.bind(this,"phone")}/></label>
-                                        <p className="err">{this.state.errPhone}</p>
+                                    {
+                                        registerMethod && !mobile &&
+                                            <li className="select">
+                                                <SelectHospital onSelectChange={this.selectChange} value={hospital} options={options}/>
+                                                <p className="err">{v.hospital.tips}</p>
+                                            </li>
 
+                                    }
+                                    {
+                                        registerMethod &&
+                                            <li  onClick={this.setInput.bind(this,"user","请输入姓名")}>
+                                                <label><input type="text" name="user" placeholder="姓名" value={user} readOnly/></label>
+                                                <p className="err">{v.user.tips}</p>
+                                            </li>
+
+                                    }
+                                    <li onClick={this.setInput.bind(this,"phone","请输入手机号")}>
+                                        <label><input type="text" name="phone" placeholder="手机号" value={phone} readOnly/></label>
+                                        <p className="err">{v.phone.tips||errPhone}</p>
                                     </li>
                                     <li className="code">
-                                        <input type="text" placeholder="验证码" onBlur={this.getValue.bind(this,"code")} onFocus={this.toTop}/>
-                                        <p className={`get-code ${this.state.getCodeFlag?"":"active"}`} onClick={this.getCode}>{this.state.codeBtnText}</p>
-                                        <p className="err">{this.state.errCode}</p>
+                                        <input type="text" name="code" placeholder="验证码" value={code}  onClick={this.setInput.bind(this,"code","请输入验证码")} readOnly/>
+                                        <p className={`get-code ${getCodeFlag?"":"active"}`} onClick={this.getCode}>{codeBtnText}</p>
+                                        <p className="err">{v.code.tips||errCode}</p>
 
+                                    </li>
+
+                                    <li onClick={this.setInput.bind(this,"newPassWord","请输入新密码")}>
+                                        <label><input type="password" name="newPassWord" placeholder="请输入新密码" value={newPassWord} readOnly/></label>
+                                        <p className="err">{v.newPassWord.tips}</p>
+                                    </li>
+                                    <li onClick={this.setInput.bind(this,"surePassWord","请确认新密码")}>
+                                        <label><input type="password" name="surePassWord" placeholder="请确认新密码" value={surePassWord} readOnly /></label>
+                                        <p className="err">{v.surePassWord.tips}</p>
                                     </li>
 
                                     <li>
-                                        <label><input type="password" placeholder="请输入新密码" onChange={this.getValue.bind(this,"newPassWord")} onFocus={this.toTop}/></label>
-                                        <p className="err">{this.state.errNewPassWord}</p>
+                                        <Button type="info"  onClick={this.submit}>{registerMethod?"发送":"确认"}</Button>
                                     </li>
-                                    <li>
-                                        <label><input type="password" placeholder="请确认新密码" onChange={this.getValue.bind(this,"surePassWord")} onFocus={this.toTop}/></label>
-                                        <p className="err">{this.state.errSurePassWord}</p>
-                                    </li>
-
-                                    <li><Button type="info"  onClick={this.submit}>{this.state.registerMethod?"发送":"确认"}</Button></li>
                                 </ul>
                             </section>
                     }
-                    {   this.state.loading?
-                        <Loading fullscreen={true} text="登陆中......"></Loading>:null
+                    {
+                        getInputData &&
+                        <InputMark onGetInput={this.getInput} placeholder={placeholder} value={value} k={key} textarea={textarea}/>
+                    }
+                    {
+                        loading &&
+                        <Loading fullscreen={true} text="登陆中......" />
                     }
                 </section>
         )

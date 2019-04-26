@@ -279,7 +279,7 @@ export class ScanRegister extends Component {
                 }
                 {
                     getInputData &&
-                    <section className="in">
+                    <section className="input-mark">
                         <section onKeyUp={(e)=>{
                             if(e.keyCode===13){
                                 this.setState({

@@ -22,3 +22,38 @@
     padding-left:10px;
     border-bottom: 1px solid #e5e5e5;
 }
+.information p{
+    margin:0 10px;
+    height:30px;
+    line-height: 30px;
+    text-align: right;
+}
+.his-info {
+    font-size: 18px;
+}
+.his-info .user{
+    display: flex;
+    margin: 0 10px;
+    height:38px;
+    line-height: 38px;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+    background:#ffb985;
+}
+.his-info .user p:first-child{
+    margin-left: 10px;
+    width:100px;
+}
+.his-info ul{
+    margin:0 10px 20px;
+    box-shadow: 0 0 6px #e5e5e5;
+}
+.his-info ul li{
+    height:38px;
+    padding-left:10px;
+    line-height: 38px;
+    border-bottom:1px solid #e5e5e5;
+}
+.his-info .n{
+    text-align: center;
+}

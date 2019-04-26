@@ -11,10 +11,11 @@ let baseQrUrl="http://guahao.easthospital.cn:8088/qr/";
 let baseOUrl="http://guahao.easthospital.cn:8088/";
 let baseKQrl="http://yiliao.chinaforwards.com:8006";
 
- if(process.env.NODE_ENV==="development"){      
-    // baseUrl="/yx/api/";
-    // baseRestartUrl="/reset/";
-     baseKQrl="http://192.168.17.166:3000";
+ if(process.env.NODE_ENV==="development"){
+     baseUrl="http://192.168.17.169:8005/api/";
+     basePrUrl="http://192.168.17.169:8088/api/";
+     // baseQrUrl="http://192.168.17.169:8088/qr/"
+     baseKQrl="http://192.168.17.159:3000";
      baseQrUrl = "http://192.168.17.166:8088/qr/";
  }
 export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl,baseOUrl,baseKQrl}
@@ -25,7 +26,7 @@ export let isBasic = (it) => {
 export let clone =  (it) => {
     if(isBasic(it)){
         return it;
-}
+    }
     let result = Array.isArray(it) ? [] : {};
     for (let i in it){
         result[i]=clone(it[i]);
@@ -55,17 +56,15 @@ export let getCodeTime = (_this,url,parameter,f=true) => {
         return false;
     }
     if(f){
-        if(!!_this.state.errPhone.trim()){
-            return false;
-        }
+        _this.setState({errPhone:""});
         if(!_this.state.phone.trim()){
             _this.setState({errPhone:"手机号不能为空!"});
             return false;
 
         }
-        if(!!_this.state.errPhone.trim()){
+        if(!/^1[3,4,5,7,8]\d{9}$/.test(_this.state.phone.trim())){
+            _this.setState({errPhone:"手机号格式不正确"});
             return false;
-
         }
     }else{
         // 会议签到
@@ -73,7 +72,6 @@ export let getCodeTime = (_this,url,parameter,f=true) => {
             MessageBox.alert("手机号不能为空","提示");
             return false;
         }
-        console.log(_this.state.phone)
         if(!/^1[3,4,5,7,8]\d{9}$/.test(_this.state.phone.trim())){
             MessageBox.alert("手机号格式不正确","提示");
             return false;

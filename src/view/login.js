@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import wx from '../image/wx.png'
-import {getCodeTime,getCookie,setCookie,baseUrl} from "../tool/tool";
+import {getCodeTime,getCookie,setCookie,baseUrl,getUrlParam} from "../tool/tool";
 import {Link} from 'react-router-dom'
 import {Button,Loading,MessageBox} from "element-react"
-import {getUrlParam} from "../tool/tool";
 import "whatwg-fetch"
 import qs from "qs";
 export class Login extends Component {
@@ -18,7 +17,8 @@ export class Login extends Component {
             errPhone:"",
             errCode:"",
             errPassword:"",
-            loading:false
+            loading:false,
+            user:!!getUrlParam("mobile")
         }
     }
     componentDidMount () {
@@ -67,10 +67,10 @@ export class Login extends Component {
                     }
                     setCookie("userMsg",JSON.stringify(userMsg),10);
                     setCookie("token",JSON.stringify(data.msg),10);
-                    this.props.history.push( '/home',null);
+                    !this.state.user?this.props.history.push( '/home',null):this.props.history.push('/servicehome',null);
                     break;
                 default :
-                    MessageBox.alert("登录失败，请重新登录");
+                    MessageBox.alert(data.msg,'提示');
                     break;
 
             }
@@ -94,6 +94,9 @@ export class Login extends Component {
     }
     getCode = () =>{
         let url=baseUrl+"verifyCode/sendCode_login";
+        if(this.state.user){
+            url=baseUrl+"verifyCode/sendCode_patientLogin"
+        }
         let parameter={
             phoneNum:this.state.phone
         }
@@ -111,7 +114,10 @@ export class Login extends Component {
         if(v==="password"){
             this.setState({errPassword:""});
             this.setState({password:e.target.value.trim()});
-            if(!/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
+            if(!e.target.value.trim()){
+                this.setState({errPassword:"密码或工号不能为空"});
+            }
+            if(this.state.user && !/^[a-zA-Z0-9_]\w{5,17}$/.test(e.target.value.trim())){
                 this.setState({errPassword:"密码为6-18位的字母、数字、下划线"});
             }
         }
@@ -157,6 +163,7 @@ export class Login extends Component {
                 this.setState({errCode:"验证码不能为空"});
                 flag=false;
             }
+
             url=baseUrl+"account/getUserAccessToken/verificationCode";
             parameter={
                 phoneNum:this.state.phone,
@@ -187,7 +194,7 @@ export class Login extends Component {
                         {
                             this.state.loginMethod?
                                 <li className="password">
-                                    <input placeholder="请输入密码" onChange={this.getValue.bind(this,"password")} type="password" value={this.state.password}/>
+                                    <input placeholder={this.state.user?"请输入密码":"请输入密码或工号"} onChange={this.getValue.bind(this,"password")} type="password" value={this.state.password}/>
                                     <p className="err">{this.state.errPassword}</p>
                                 </li>
                                 :
@@ -200,7 +207,7 @@ export class Login extends Component {
                         <li className="sign"><Button type="info" onClick={this.submit}>登录</Button></li>
                         <li>
                             <p><Link to="/register/2">{this.state.loginMethod?`忘记密码?`:''}</Link></p>
-                            <p><Link to="/register/1">手机注册</Link></p>
+                            <p><Link to={`/register/1?mobile=${this.state.user}`}>手机注册</Link></p>
                         </li>
                     </ul>
                 </div>
@@ -212,8 +219,9 @@ export class Login extends Component {
                          <img src={wx} alt=""/>
                      </li>
                 </ul>
-                {this.state.loading?
-                    <Loading fullscreen={true} text="登陆中......" loading={true}></Loading>:null}
+                {
+                    this.state.loading && <Loading fullscreen={true} text="登陆中......" loading={true} />
+                }
             </div>
         )
     }

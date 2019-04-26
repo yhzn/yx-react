@@ -1,0 +1,102 @@
+.money-info.container{
+    background:#f0f0f0;
+    height: calc(100vh - 90px);
+}
+.money-info .el-tabs__header{
+    background:#ffffff;
+
+}
+.money-info .el-tabs__nav{
+    width:100%;
+}
+.money-info .el-tabs__nav .el-tabs__item{
+    padding:0;
+    text-align: center;
+    width:50%;
+}
+.money-info .el-tabs__content{
+    height:calc(100% - 58px);
+    background:#f0f0f0;
+}
+.money-info .el-tab-pane{
+    height:100%;
+}
+.money-info ul{
+    overflow: hidden;
+    margin-bottom: 16px;
+    padding-top:10px;
+    box-shadow: 0 0 5px #cfcfcf;
+    font-size: 18px;
+    border-radius: 5px;
+    background: #ffffff;
+}
+/*.money-info .pass ul{*/
+    /*background:#ffffff url("../image/nopass.png") no-repeat top 10px right 10px;*/
+    /*background-size: 100px 100px;*/
+/*}*/
+/*.money-info .pass ul.active{*/
+    /*background:#ffffff url("../image/pass.png") no-repeat top 10px right 10px;*/
+    /*background-size: 100px 100px;*/
+
+/*}*/
+.money-info .scroll-container{
+    margin:0;
+    height:100%;
+    overflow: fragments;
+}
+.money-info section{
+    margin:0 10px 10px;
+}
+.money-info ul li{
+    padding:5px 10px;
+}
+.money-info ul li:last-child{
+    padding:0;
+}
+.money-info ul li:last-child button{
+    width:100%;
+    border-radius: 0 0 5px 5px;
+}
+.money-info .wait{
+    position: relative;
+    display: inline-block;
+}
+.money-info .wait p{
+    position: absolute;
+    top: 6px;
+    left: 50px;
+    padding:0 3px;
+    height:18px;
+    font-size: 13px;
+    text-align: center;
+    line-height: 19px;
+    border-radius: 9px;
+    background:#ff0000;
+    color:#ffffff;
+}
+.money-info .empty{
+    display: flex;
+    height:300px;
+    justify-content: center;
+    align-items: flex-end;
+    background:url("../image/nodata.png") no-repeat center;
+    background-size: 180px 180px;
+}
+.money-info .empty p{
+    color:#a0a0a0;
+}
+.money-info .remark{
+    display: flex;
+}
+.money-info .remark textarea{
+    flex-grow: 1;
+    padding-top:3px;
+    height:60px;
+    font-size: 18px;
+    border:none;
+}
+.money-info-page{
+    display: flex;
+    justify-content: flex-end;
+    padding-top:6px;
+}

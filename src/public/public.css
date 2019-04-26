@@ -52,5 +52,43 @@
 .el-input__inner{
     height:32px;
 }
+/* 日期范围 */
+.data-range {
+    padding:6px 10px;
+}
+.data-range .line{
+    margin:0 3px;
+}
+.data-range button{
+    float:right;
+    padding:8px 18px;
+}
 
-/* 表头样式 */
+/*输入框蒙版*/
+.input-mark{
+    position: absolute;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0.8);
+    z-index:10;
+}
+.input-mark section{
+    padding:50px 10px 20px;
+    background:#ffffff;
+}
+.input-mark section input{
+    height:32px;
+    border:1px solid #bfcbd9;
+}
+.input-mark .textarea-container{
+    display: flex;
+    padding: 0;
+}
+.input-mark .textarea-container textarea{
+    border-radius: 4px 0 0 4px;
+}
+.input-mark .textarea-container button{
+    border-left:none;
+    border-radius: 0 4px 4px 0;
+}

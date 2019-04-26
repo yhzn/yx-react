@@ -60,7 +60,7 @@ export class ScanSign extends Component {
                 switch (data.code){
                     case 0:
                         setCookie("scanToken",JSON.stringify(data.msg),10);
-                        if(!getUrlParam("qrcode")||!getUrlParam("nId")){
+                        if((!getUrlParam("qrcode")||!getUrlParam("nId")) && !getUrlParam("openId")){
                             MessageBox.alert("登录成功，请返回微信，扫码签到");
                             return false;
                         }
@@ -85,7 +85,8 @@ export class ScanSign extends Component {
             }),10);
             this.postData(`${baseQrUrl}account/getUserAccessToken/password`,{
                 phoneNum:this.state.phone,
-                password:this.state.password
+                password:this.state.password,
+                openId:getUrlParam("openId")
             })
         }
     }

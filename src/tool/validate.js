@@ -14,15 +14,15 @@ export let type={
     },
     password:{
         tips:({name})=>`${name}为6-18位的字母、数字、下划线`,
-        reg:/^[a-zA-Z0-9_]\w{5,17}$/,
+        reg:/^[a-zA-Z0-9_]\w{5,17}$/
     },
     RMB:{
         tips:({name})=>`${name}只能是数字格式的人民币`,
         reg:/^(([1-9]\d*)|0)(\.\d{0,2})?$/
     },
     cardId:{
-        tips:({name})=>`请输入正确的${name}号`,
-        reg:/(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+        tips:({name})=>`请输入正确的${name}`,
+        reg:/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
     },
     numeric:{
         tips:({name,input,set})=>{
