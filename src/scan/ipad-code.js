@@ -74,7 +74,8 @@ export class IpadCode extends Component {
                         this.qrCode.clear(); // 清除代码
                         // this.qrCode.makeCode(`${baseKQrl}/#/information?qrcode=${data.msg}&nId=${this.nId}`);
 
-                        this.qrCode.makeCode(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6db38443cc90435b&redirect_uri=http://hospital.natapp1.cc/wechat/authorize&response_type=code&scope=snsapi_base&state=${baseKQrl}/#/information?qrcode=${data.msg}_nId=${this.nId}#wechat_redirect`);
+                        // this.qrCode.makeCode(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6db38443cc90435b&redirect_uri=http://hospital.natapp1.cc/wechat/authorize&response_type=code&scope=snsapi_base&state=${baseKQrl}/%23/information?qrcode=${data.msg}_nId=${this.nId}#wechat_redirect`);
+                        this.qrCode.makeCode(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6db38443cc90435b&redirect_uri=http://yiliao.chinaforwards.com/wechat/authorize&response_type=code&scope=snsapi_base&state=${baseKQrl}/%23/information?qrcode=${data.msg}_nId=${this.nId}#wechat_redirect`);
                     }
                     this.timer=setTimeout(()=>{
                         this.state.timerCount--;

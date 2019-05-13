@@ -22,6 +22,7 @@ export class Login extends Component {
         }
     }
     componentDidMount () {
+        console.log(!this.state.user)
         let urlParam=getUrlParam("code");
         let getUserMsg=getCookie("userMsg");
         if(!!urlParam){
@@ -131,7 +132,6 @@ export class Login extends Component {
             phone:this.state.phone,
             password:this.state.password
         }
-        setCookie("userMsg",JSON.stringify(userMsg),10);
         // console.log(getCookie("token"))
         // localStorage.setItem(`myCat`, `Tom`);
         // console.log(localStorage.getItem(`mt`));
@@ -157,6 +157,15 @@ export class Login extends Component {
                 phoneNum:this.state.phone,
                 password:this.state.password
             }
+
+            if(this.state.user){
+                url=`${baseUrl}system/patientLogin/getPatientAccessToken/password`;
+                parameter={
+                    patientPhone:this.state.phone,
+                    password:this.state.password
+                }
+
+            }
         }else{
             this.setState({errCode:""});
             if(!this.state.code.trim()){
@@ -169,10 +178,19 @@ export class Login extends Component {
                 phoneNum:this.state.phone,
                 code:this.state.code
             }
+            if(this.state.user){
+                url=`${baseUrl}system/patientLogin/getPatientAccessToken/verificationCode`;
+                parameter={
+                    patientPhone:this.state.phone,
+                    code:this.state.code
+                }
+
+            }
         }
         if(!flag){
             return false;
         }
+        setCookie("userMsg",JSON.stringify(userMsg),10);
         this.getData(url,parameter);
     }
     render(){
@@ -206,8 +224,16 @@ export class Login extends Component {
                         }
                         <li className="sign"><Button type="info" onClick={this.submit}>登录</Button></li>
                         <li>
-                            <p><Link to="/register/2">{this.state.loginMethod?`忘记密码?`:''}</Link></p>
-                            <p><Link to={`/register/1?mobile=${this.state.user}`}>手机注册</Link></p>
+                            <p>
+                                <Link to={this.state.user?`/register/2?mobile=${this.state.user}`:`/register/2`}>
+                                    {this.state.loginMethod?`忘记密码?`:''}
+                                </Link>
+                            </p>
+                            <p>
+                                <Link to={this.state.user?`/register/1?mobile=${this.state.user}`:`/register/1`}>
+                                    手机注册
+                                </Link>
+                            </p>
                         </li>
                     </ul>
                 </div>

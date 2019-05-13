@@ -9,12 +9,22 @@
     align-items: center;
     background: linear-gradient(90deg,#37c3fe,#2f8fff);
 }
+.service-home .bar .del{
+    display: flex;
+    align-items: center;
+    width: calc(100% - 20px);
+
+
+}
+.service-home .bar .del .t{
+    margin-left: 10px;
+}
 .service-home .bar .user{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 120px;
-    width: 120px;
+    height: 96px;
+    width: 96px;
     margin-bottom:10px;
     border-radius: 100%;
     background:radial-gradient(#fff 49%,#81c8fe 51%,#81c8fe 60%,#4da9ff 62%);
@@ -29,7 +39,7 @@
     overflow: hidden;
 }
 .service-home .bar p{
-    margin-bottom:20px;
+    margin-bottom:10px;
     color:#ffffff;
 }
 .service-home ul{
