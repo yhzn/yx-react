@@ -19,6 +19,7 @@
   "devDependencies": {
     "autoprefixer": "^9.1.5",
     "better-scroll": "^1.15.2",
+    "echarts": "^4.2.1",
     "element-react": "^1.4.21",
     "element-theme-default": "^1.4.13",
     "jquery": "^3.3.1",

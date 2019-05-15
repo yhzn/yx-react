@@ -34,28 +34,12 @@ class App extends Component {
             <Router>
                 <div className="flex-container">
                     <Switch>
-                        <Route exact path="/" component={Login}/>
-                        <Route path="/register/:id" component={Register}/>
-                        <Route path="/home" component={Home}/>
-                        <Route path="/auth/:id" component={Auth}/>
-                        <Route path="/restart/:id" component={Restart}/>
-                        <Route path="/filelist/:id" component={FileList}/>
-                        <Route path="/v" component={Validate}/>
-                        <Route path="/oper/:id" component={Oper}/>
-                        <Route path="/print/:id" component={Print}/>
-                        <Route path="/ghsf/:id" component={Ghsf}/>
-                        <Route path="/ghsfsub/:id" component={GhsfSub}/>
+                        <Route exact path="/" component={IpadSign}/>
                         <Route path="/ScanSign" component={ScanSign}/>
                         <Route path="/ScanRegister/:id" component={ScanRegister}/>
                         <Route path="/Information" component={Information}/>
-                        <Route path="/IpadSign" component={IpadSign}/>
                         <Route path="/IpadCode" component={IpadCode}/>
-                        <Route path="/NoticeScreen" component={NoticeScreen}/>
-                        <Route path="/NoticeQuery" component={NoticeQuery}/>
                         <Route path="/HisInfo/:id" component={HisInfo}/>
-                        <Route path="/ServiceHome" component={ServiceHome}/>
-                        <Route path="/ServiceInfo" component={ServiceInfo}/>
-                        <Route path="/MoneyInfo" component={MoneyInfo}/>
                         <Route path="/InfoHistory" component={InfoHistory}/>
                     </Switch>
                 </div>

@@ -78,9 +78,7 @@ export class Information extends Component {
                         delCookie("scanToken");
                         window.location.href=`${baseKQrl}/#/scansign?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}&openId=${getUrlParam("openId")}`
                     })
-
             })
-
     }
     render () {
         let {data} = this.state;
@@ -101,7 +99,6 @@ export class Information extends Component {
                                 <li>签退时间：{data.signOutDateTime}</li>
                             </ul>
                         </section>
-
                     }
                     <p>
                         <Link to={`/HisInfo/${getUrlParam("openId")}`}>查看个人会议考勤记录</Link>
