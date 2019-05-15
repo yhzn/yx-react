@@ -15,8 +15,9 @@ let baseKQrl="http://yiliao.chinaforwards.com:8006";
      baseUrl="http://192.168.17.169:8005/api/";
      basePrUrl="http://192.168.17.169:8088/api/";
      // baseQrUrl="http://192.168.17.169:8088/qr/"
-     baseKQrl="http://192.168.17.159:3000";
+     baseKQrl="http://yiliao.chinaforwards.com:8006";
      baseQrUrl = "http://192.168.17.166:8088/qr/";
+
  }
 export {baseUrl,baseRestartUrl,basePrUrl,baseQrUrl,baseOUrl,baseKQrl}
 
