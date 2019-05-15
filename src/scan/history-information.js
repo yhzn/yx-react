@@ -29,12 +29,11 @@ export class HisInfo extends Component {
             click:true,
             probeType:3,
         })
-        if(this.openId){
+        if(this.openId!=="null" && this.openId){
             this.getData(`${baseQrUrl}vail/signListByOpenId`,{
               startDate:moment(this.state.startTime).format('YYYY-MM-DD'),
               endDate:moment(this.state.endTime).format('YYYY-MM-DD'),
               openId:this.openId
-
             })
         }else{
             this.getData(`${baseQrUrl}vail/signList`,{
@@ -135,9 +134,9 @@ export class HisInfo extends Component {
                         {
                                 data.map((item,index) => (
                                 <ul key={index}>
-                                    <li>会议名称：{item.sMeetingname}</li>
-                                    <li>签到时间：{item.qdTime}</li>
-                                    <li>签退时间：{item.qtTime}</li>
+                                    <li>会议名称：{item.meetName}</li>
+                                    <li>签到时间：{item.signInDateTime}</li>
+                                    <li>签退时间：{item.signOutDateTime}</li>
                                 </ul>
 
                             ))

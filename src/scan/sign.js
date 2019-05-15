@@ -61,7 +61,7 @@ export class ScanSign extends Component {
                     case 0:
                         setCookie("scanToken",JSON.stringify(data.msg),10);
                         if((!getUrlParam("qrcode")||!getUrlParam("nId")) && !getUrlParam("openId")){
-                            MessageBox.alert("登录成功，请返回微信，扫码签到");
+                            this.props.history.push( '/information',null);
                             return false;
                         }
                         window.location.href=`${baseKQrl}/#/information?qrcode=${getUrlParam("qrcode")}&nId=${getUrlParam("nId")}&openId=${getUrlParam("openId")}`

@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import {Header} from "../component/header";
 import {Select, Tabs, Button, Table, MessageBox,Loading,Message} from 'element-react'
 import BScroll from 'better-scroll'
-// import {baseUrl} from "../tool/tool";
+import {baseQrUrl} from "../tool/tool";
 import {DataRange} from "../component/data-range";
 import moment from 'moment'
-// let baseUrl="http://192.168.17.170:8088/qr/"
-let baseUrl="http://192.168.17.166:8088/qr/"
+
 
 export class InfoHistory extends Component {
     constructor (props) {
@@ -21,20 +20,20 @@ export class InfoHistory extends Component {
             columns: [
                 {
                     label: "姓名",
-                    prop: "sRecorderName",
+                    prop: "personnelName",
                     align:"center",
                     headerAlign:"center"
                 },
                 {
                     label: "工号",
-                    prop: "sRecorder",
+                    prop: "personnelNumber",
                     align:"center",
                     headerAlign:"center"
 
                 },
                 {
                     label: "时间",
-                    prop: "tChecktime",
+                    prop: "signInDateTime",
                     align:"center",
                     headerAlign:"center",
                     width:180
@@ -69,7 +68,7 @@ export class InfoHistory extends Component {
     }
     getData = (id) => {
         this.setState({loading:true});
-        fetch(`${baseUrl}display/getSignList?id=${id}`)
+        fetch(`${baseQrUrl}display/getSignList?id=${id}`)
             .then((response) => {
                 this.setState({loading:false});
                 if(response.status===200){
@@ -105,7 +104,7 @@ export class InfoHistory extends Component {
     }
     getList = (start,end) => {
         this.setState({loading:true});
-        fetch(`${baseUrl}display/getMeetingList?startDate=${start}&endDate=${end}`)
+        fetch(`${baseQrUrl}display/getMeetingList?startDate=${start}&endDate=${end}`)
             .then((response) => {
                 this.setState({loading:false});
                 if(response.status===200){
@@ -131,7 +130,7 @@ export class InfoHistory extends Component {
             })
     }
     exp = () => {
-        window.location.href=`${baseUrl}display/exportSignPerson?id=${this.meetingId}`
+        window.location.href=`${baseQrUrl}display/exportSignPerson?id=${this.meetingId}`
     }
     render () {
         let {selectOption,selectValue,showHis,columns,data,startTime,endTime,t,loading,expLoading}=this.state;
@@ -181,7 +180,7 @@ export class InfoHistory extends Component {
                                         <section>
                                             <Table
                                                 columns={columns}
-                                                data={data.qq}
+                                                data={data.absenceList}
                                             />
                                         </section>
                                     </section>
@@ -191,7 +190,7 @@ export class InfoHistory extends Component {
                                         <section>
                                             <Table
                                                 columns={columns}
-                                                data={data.cd}
+                                                data={data.lateList}
                                             />
                                         </section>
                                     </section>
@@ -201,7 +200,7 @@ export class InfoHistory extends Component {
                                         <section>
                                             <Table
                                                 columns={columns}
-                                                data={data.zs}
+                                                data={data.onTimeList}
                                             />
                                         </section>
                                     </section>

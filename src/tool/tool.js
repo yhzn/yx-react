@@ -9,13 +9,14 @@ let baseRestartUrl="http://210.22.124.170:8089/";
 let basePrUrl="http://guahao.easthospital.cn:8088/api/";
 let baseQrUrl="http://guahao.easthospital.cn:8088/qr/";
 let baseOUrl="http://guahao.easthospital.cn:8088/";
-let baseKQrl="http://yiliao.chinaforwards.com:8006";
+let baseKQrl="http://yiliao.chinaforwards.com:8027";
 
  if(process.env.NODE_ENV==="development"){
      baseUrl="http://192.168.17.169:8005/api/";
      basePrUrl="http://192.168.17.169:8088/api/";
      // baseQrUrl="http://192.168.17.169:8088/qr/"
-     baseKQrl="http://yiliao.chinaforwards.com:8006";
+
+     // baseKQrl="http://192.168.17.159:3001";
      baseQrUrl = "http://192.168.17.166:8088/qr/";
 
  }

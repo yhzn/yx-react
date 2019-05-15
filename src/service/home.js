@@ -12,10 +12,17 @@ export class ServiceHome extends Component {
                 <Header title="患者服务" />
                 <section className="service-home container">
                     <section className="bar">
-                        <section className="user">
-                           <div />
+                        <section className="del">
+                            <section className="user">
+                               <div />
+                            </section>
+                            <section className="t">
+                                <p>姓名：</p>
+                                <p>电话：</p>
+                                <p>医疗卡号：</p>
+                                <p>身份证号：888888888888888888</p>
+                            </section>
                         </section>
-                        <p>用户名</p>
                     </section>
                     <ul className="cleanfix">
                         <li>
