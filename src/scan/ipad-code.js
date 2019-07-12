@@ -24,6 +24,8 @@ export class IpadCode extends Component {
         )
         let hasCookie = getCookie("scanToken");
         if(hasCookie) {
+            console.log(hasCookie)
+            console.log(`${baseQrUrl}display/getlist`)
             fetch(`${baseQrUrl}display/getlist`,
                 {
                     headers: {
@@ -38,7 +40,8 @@ export class IpadCode extends Component {
                 })
                 .then((data) => {
                     if(data.code===0){
-                        this.setState({options:data.data.meetingInfos})
+                        console.log(data.data)
+                        this.setState({options:data.data})
 
                     }else{
                         MessageBox.alert(data.msg,"提示")
@@ -55,7 +58,7 @@ export class IpadCode extends Component {
         this.nId=value;
         this.setState({timerCount:5});
         this.refreshCode();
-        this.setState({list:this.state.options.filter((item)=>{return item.nId===value})[0]})
+        this.setState({list:this.state.options.filter((item)=>{return item.nMeetingid===value})[0]})
     }
     refreshCode = () => {
         clearTimeout(this.timer);
@@ -76,7 +79,7 @@ export class IpadCode extends Component {
 
 
                         // this.qrCode.makeCode(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6db38443cc90435b&redirect_uri=http://hospital.natapp1.cc/wechat/authorize&response_type=code&scope=snsapi_base&state=${baseKQrl}/%23/information?qrcode=${data.msg}_nId=${this.nId}#wechat_redirect`);
-                        this.qrCode.makeCode(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6db38443cc90435b&redirect_uri=http://yiliao.chinaforwards.com/wechat/authorize&response_type=code&scope=snsapi_base&state=${baseKQrl}/%23/information?qrcode=${data.msg}_nId=${this.nId}#wechat_redirect`);
+                        this.qrCode.makeCode(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6db38443cc90435b&redirect_uri=http://yiliao.chinaforwards.com/wechat/authorize&response_type=code&scope=snsapi_base&state=${baseKQrl}/%23/information?qrcode=${data.data}_nId=${this.nId}#wechat_redirect`);
                     }
                     this.timer=setTimeout(()=>{
                         this.state.timerCount--;
@@ -108,7 +111,7 @@ export class IpadCode extends Component {
                                 return <Select.Option
                                     key={index}
                                     label={`${el.sMeetingname}(${el.sMeetingaddress})`}
-                                    value={el.nId}
+                                    value={el.nMeetingid}
                                 />
                             })
                         }

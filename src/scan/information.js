@@ -54,8 +54,8 @@ export class Information extends Component {
             })
             .then((data)=>{
                 if(data.code===0){
-                    scanInfoData.data=data.msg;
-                    this.setState({data:data.msg})
+                    scanInfoData.data=data.data;
+                    this.setState({data:data.data})
                 }else{
                     MessageBox.msgbox({
                         title: "提示",

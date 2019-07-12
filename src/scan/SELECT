@@ -1,0 +1,17 @@
+SELECT
+    DISTINCT
+    D.PersonnelNumber AS personnelNumber,
+    D.PersonnelName AS personnelName,
+    (
+	CASE WHEN E.SignInDateTime IS NULL AND A.LinkMeetID IS NOT NULL
+  THEN 
+  SELECT SignInDateTime FROM PersonnelSignRecord WHERE MeetID = A.LinekMeetID
+  ELSE
+  E.SignInDateTime) AS signInDateTime,
+    E.SignOutDateTime AS signOutDateTime
+   FROM Meeting A
+  LEFT JOIN MeetingRelationPersonnelGroup B ON A.ID=B.MeetID
+  LEFT JOIN PersonnelRelationGroup C ON B.PersonnelGroupID = C.PersonnelGroupID
+  LEFT JOIN Personnel D ON C.PersonneID = D.PersonnelNumber
+  LEFT JOIN (SELECT SignInDateTime,SignOutDateTime,PersonnelNumber FROM PersonnelSignRecord WHERE MeetID = 279 ) E ON D.PersonnelNumber = E.PersonnelNumber
+  WHERE A.MeetingState=1 AND A.ID=279 ORDER BY E.SignInDateTime

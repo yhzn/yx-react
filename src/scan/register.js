@@ -122,11 +122,11 @@ export class ScanRegister extends Component {
     getCode = () => {
         if(this.state.registerMethod){
             // 用户注册
-            getCodeTime(this,`${baseQrUrl}verifyCode/sendCode_register`,{phoneNum:this.state.phone,userid:this.state.jobNum},false);
+            getCodeTime(this,`${baseQrUrl}verifyCode/sendCodeByRegister`,{phoneNumber:this.state.phone,userId:this.state.jobNum},false);
 
         }else{
             // 找回密码
-            getCodeTime(this,`${baseQrUrl}verifyCode/sendCode_changepassword`,{phoneNum:this.state.phone},false);
+            getCodeTime(this,`${baseQrUrl}verifyCode/sendCodeByChangePassword`,{phoneNumber:this.state.phone},false);
         }
     }
     submit = () => {

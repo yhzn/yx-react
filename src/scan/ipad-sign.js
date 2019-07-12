@@ -42,7 +42,7 @@ export class IpadSign extends Component {
         }
     }
     getCode = () => {
-        getCodeTime(this,`${baseQrUrl}verifyCode/sendCode_login`,{phoneNum:this.state.phone},false)
+        getCodeTime(this,`${baseQrUrl}verifyCode/sendCodeByLogin`,{phoneNumber:this.state.phone},false)
     }
     postData = (url,parameter) => {
         this.setState({loading:true});
@@ -61,9 +61,10 @@ export class IpadSign extends Component {
                 }
             })
             .then((data) => {
+                console.log(data.data)
                 switch (data.code){
                     case 0:
-                        setCookie("scanToken",JSON.stringify(data.msg),10);
+                        setCookie("scanToken",JSON.stringify(data.data),10);
                         this.props.history.push( '/ipadcode',null);
                         break;
                     default :

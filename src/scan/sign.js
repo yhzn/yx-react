@@ -59,7 +59,7 @@ export class ScanSign extends Component {
             .then((data) => {
                 switch (data.code){
                     case 0:
-                        setCookie("scanToken",JSON.stringify(data.msg),10);
+                        setCookie("scanToken",JSON.stringify(data.data),10);
                         if((!getUrlParam("qrcode")||!getUrlParam("nId")) && !getUrlParam("openId")){
                             this.props.history.push( '/information',null);
                             return false;

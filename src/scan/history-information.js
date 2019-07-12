@@ -43,7 +43,7 @@ export class HisInfo extends Component {
         }
     }
     getDateRange = (startTime,endTime) => {
-        if(this.openId){
+        if(this.openId!=="null" && this.openId){
             this.getData(`${baseQrUrl}vail/signListByOpenId`,{
               startDate:moment(startTime).format('YYYY-MM-DD'),
               endDate:moment(endTime).format('YYYY-MM-DD'),
